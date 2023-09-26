@@ -3,10 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { HomeComponent } from './home/home.component';
+import { MenuComponent } from './shared/menu/menu.component';
+import { ThumbnailComponent } from './shared/thumbnail/thumbnail.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AuthenticationComponent,
+    HomeComponent,
+    MenuComponent,
+    ThumbnailComponent
   ],
   imports: [
     BrowserModule,
