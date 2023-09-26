@@ -1,1 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
+$red: #FC4747;
+$dark-blue: #10141E;
+$greyish-blue: #5A698F;
+$semi-dark-blue: #161D2F;
+$white: #FFF;
+
+@mixin heading-large() {
+  font-family: Outfit;
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+}
+
+@mixin heading-medium() {
+  font-family: Outfit;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+@mixin heading-small() {
+  font-family: Outfit;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+@mixin heading-xsmall() {
+  font-family: Outfit;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+@mixin body-medium() {
+  font-family: Outfit;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+@mixin body-small() {
+  font-family: Outfit;
+  font-size: 13px;
+  font-weight: 300;
+}
