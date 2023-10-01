@@ -1,0 +1,61 @@
+@mixin heading-large($color: #FFF) {
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  color: $color;
+
+  @media screen and (max-width: 767px) {
+    font-size: 20px;
+    letter-spacing: -0.312px;
+  }
+}
+
+@mixin heading-medium($color: #FFF) {
+  font-size: 24px;
+  font-weight: 300;
+  color: $color;
+
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+  }
+}
+
+@mixin heading-small($color: #FFF) {
+  font-size: 24px;
+  font-weight: 500;
+  color: $color;
+
+  @media screen and (max-width: 767px) {
+    font-size: 15px;
+  }
+}
+
+@mixin heading-xsmall($color: #FFF) {
+  font-size: 18px;
+  font-weight: 500;
+  color: $color;
+
+  @media screen and (max-width: 767px) {
+    font-size: 14px;
+  }
+}
+
+@mixin body-medium($color: #FFF) {
+  font-size: 15px;
+  font-weight: 300;
+  color: $color;
+
+  @media screen and (max-width: 767px) {
+    font-size: 12px;
+  }
+}
+
+@mixin body-small($color: #FFF) {
+  font-size: 13px;
+  font-weight: 300;
+  color: $color;
+
+  @media screen and (max-width: 767px) {
+    font-size: 11px;
+  }
+}
