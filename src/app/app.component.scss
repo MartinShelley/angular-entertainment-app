@@ -1,4 +1,10 @@
 #app-container {
   display: flex;
   margin: 32px;
+
+  #app-view {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 132px);
+  }
 }
