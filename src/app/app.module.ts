@@ -7,6 +7,7 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { ThumbnailComponent } from './shared/thumbnail/thumbnail.component';
+import { SearchComponent } from './shared/search/search.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ThumbnailComponent } from './shared/thumbnail/thumbnail.component';
     AuthenticationComponent,
     HomeComponent,
     MenuComponent,
-    ThumbnailComponent
+    ThumbnailComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
