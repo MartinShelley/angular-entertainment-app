@@ -24,6 +24,10 @@
     padding: 0 38px;
     min-height: 200px;
     justify-content: space-between;
+
+    .menu-item svg path:hover{
+      fill: #fff;
+    }
   }
 
   .menu-item, .account-icon {
