@@ -1,0 +1,26 @@
+.thumbnail {
+  position: relative;
+  max-width: 470px;
+
+  img {
+    border-radius: 8px;
+  }
+
+  .bookmark {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+  }
+
+  .bookmark:hover {
+    path {
+        fill: #fff;
+      }
+  }
+
+  .thumbnail-content {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+  }
+}
