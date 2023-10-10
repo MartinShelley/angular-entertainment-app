@@ -1,8 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-
 @use 'scss-reset/reset';
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500&display=swap');
+@import 'swiper/css';
 
 * {
   font-family: 'Outfit', Arial, Helvetica, sans-serif;
@@ -10,4 +9,5 @@
 
 html {
   background-color: #10141E;
+  overflow-x: hidden;
 }

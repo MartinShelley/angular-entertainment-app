@@ -1,3 +1,5 @@
+@import '_mixins.scss';
+
 .thumbnail {
   position: relative;
   max-width: 470px;
@@ -10,17 +12,32 @@
     position: absolute;
     top: 16px;
     right: 24px;
+    cursor: pointer;
   }
 
   .bookmark:hover {
     path {
-        fill: #fff;
-      }
+      fill: #fff;
+    }
   }
 
   .thumbnail-content {
     position: absolute;
     bottom: 24px;
     left: 24px;
+    color: #fff;
+
+    .thumbnail-content-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.75;
+      @include body-medium;
+      font-feature-settings: 'clig' off, 'liga' off;
+    }
+
+    h3 {
+      @include heading-small;
+    }
   }
 }

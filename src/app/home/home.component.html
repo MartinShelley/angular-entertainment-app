@@ -1,2 +1,7 @@
 <h2>Trending</h2>
-<app-thumbnail></app-thumbnail>
+<div class="trending swiper-container">
+  <div class="swiper-wrapper">
+    <app-thumbnail class="swiper-slide" *ngFor="let item of trending" [content]="item"
+      [trending]="item.isTrending"></app-thumbnail>
+  </div>
+</div>
