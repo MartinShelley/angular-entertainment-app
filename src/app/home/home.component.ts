@@ -3,6 +3,7 @@ import { Swiper } from 'swiper';
 
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +11,9 @@ import { MediaService } from '../media.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  recommended: Media[] = [];
   trending: Media[] = [];
-  private mySwiper: Swiper | undefined;
+  mySwiper: Swiper | undefined;
 
   constructor(private mediaService: MediaService) {}
 
@@ -19,6 +21,10 @@ export class HomeComponent implements OnInit {
     this.mediaService.fetchTrending().subscribe((media) => {
       this.trending = media;
       this.initSwiper();
+    })
+
+    this.mediaService.fetchRecommended().subscribe((media) => {
+      this.recommended = media;
     })
   }
 

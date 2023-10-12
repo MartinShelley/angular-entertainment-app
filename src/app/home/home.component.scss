@@ -9,3 +9,10 @@ h2 {
   display: flex;
   overflow-x: hidden;
 }
+
+.recommended-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 32px;
+  column-gap: 40px;
+}

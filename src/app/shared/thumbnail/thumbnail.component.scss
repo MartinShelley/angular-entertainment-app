@@ -2,7 +2,6 @@
 
 .thumbnail {
   position: relative;
-  max-width: 470px;
 
   img {
     border-radius: 8px;
@@ -11,20 +10,16 @@
   .bookmark {
     position: absolute;
     top: 16px;
-    right: 24px;
     cursor: pointer;
-  }
-
-  .bookmark:hover {
-    path {
-      fill: #fff;
+    
+    &:hover {
+      path {
+        fill: #fff;
+      }
     }
   }
 
   .thumbnail-content {
-    position: absolute;
-    bottom: 24px;
-    left: 24px;
     color: #fff;
 
     .thumbnail-content-top {
@@ -35,9 +30,39 @@
       @include body-medium;
       font-feature-settings: 'clig' off, 'liga' off;
     }
+  }
+}
+
+.trending-thumbnail {
+  .bookmark {
+    right: 24px;
+  }
+
+  .thumbnail-content {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
 
     h3 {
       @include heading-small;
     }
   }
+}
+
+.recommended-thumbnail {
+  .bookmark {
+    right: 16px;
+  }
+
+    .thumbnail-content {
+      margin-top: 8px;
+
+      .thumbnail-content-top {
+        margin-bottom: 5px;
+      }
+      
+      h3 {
+        @include heading-xsmall;
+      }
+    }
 }

@@ -5,3 +5,7 @@
       [trending]="item.isTrending"></app-thumbnail>
   </div>
 </div>
+<h2>Recommended for you</h2>
+<div class="recommended-grid">
+  <app-thumbnail *ngFor="let item of recommended" [content]="item" [trending]="item.isTrending"></app-thumbnail>
+</div>

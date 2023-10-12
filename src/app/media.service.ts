@@ -23,9 +23,15 @@ export class MediaService {
     }))
   }
 
+  fetchRecommended() {
+    return this.fetchAllMedia().pipe(
+      map((data) => data.filter(media => media.isTrending === false))
+    );
+  }
+
   fetchTrending() {
     return this.fetchAllMedia().pipe(
-      map((mediaArray) => mediaArray.filter(media => media.isTrending === true))
+      map((data) => data.filter(media => media.isTrending === true))
     );
   }
 }

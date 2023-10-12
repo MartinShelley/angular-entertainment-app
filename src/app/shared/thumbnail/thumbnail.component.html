@@ -1,4 +1,4 @@
-<div class="thumbnail">
+<div class="thumbnail" [ngClass]="trending ? 'trending-thumbnail' : 'recommended-thumbnail'">
   <img *ngIf="trending" src="{{ content.thumbnail.trending.large }}" />
   <img *ngIf="!trending" src="{{ content.thumbnail.regular.medium }}" />
   <svg class="bookmark" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
