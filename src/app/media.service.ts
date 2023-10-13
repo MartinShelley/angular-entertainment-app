@@ -23,6 +23,12 @@ export class MediaService {
     }))
   }
 
+  fetchMovies() {
+    return this.fetchAllMedia().pipe(
+      map((data) => data.filter(media => media.category === 'Movie'))
+    );
+  }
+
   fetchRecommended() {
     return this.fetchAllMedia().pipe(
       map((data) => data.filter(media => media.isTrending === false))
@@ -32,6 +38,12 @@ export class MediaService {
   fetchTrending() {
     return this.fetchAllMedia().pipe(
       map((data) => data.filter(media => media.isTrending === true))
+    );
+  }
+
+  fetchTVShows() {
+    return this.fetchAllMedia().pipe(
+      map((data) => data.filter(media => media.category === 'TV Series'))
     );
   }
 }

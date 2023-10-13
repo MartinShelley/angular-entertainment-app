@@ -11,3 +11,10 @@ html {
   background-color: #10141E;
   overflow-x: hidden;
 }
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 32px;
+  column-gap: 40px;
+}

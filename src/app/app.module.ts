@@ -9,6 +9,8 @@ import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { ThumbnailComponent } from './shared/thumbnail/thumbnail.component';
 import { SearchComponent } from './shared/search/search.component';
+import { MoviesComponent } from './movies/movies.component';
+import { TvSeriesComponent } from './tv-series/tv-series.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { SearchComponent } from './shared/search/search.component';
     HomeComponent,
     MenuComponent,
     ThumbnailComponent,
-    SearchComponent
+    SearchComponent,
+    MoviesComponent,
+    TvSeriesComponent
   ],
   imports: [
     BrowserModule,

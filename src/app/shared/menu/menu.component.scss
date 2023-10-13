@@ -26,6 +26,10 @@
     min-height: 200px;
     justify-content: space-between;
 
+    .selected > svg {
+      fill: #fff;
+    }
+
   }
 
   .menu-item svg, .account-icon {
