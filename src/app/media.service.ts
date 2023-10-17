@@ -58,6 +58,18 @@ export class MediaService {
     );
   }
 
+  fetchBookmarkedMovies() {
+    return this.mediaData.pipe(
+      map((data) => data.filter(media => media.isBookmarked === true && media.category === 'Movie'))
+    );
+  }
+
+  fetchBookmarkedTVSeries() {
+    return this.mediaData.pipe(
+      map((data) => data.filter(media => media.isBookmarked === true && media.category === 'TV Series'))
+    );
+  }
+
   setBookmark(id: number, value: boolean): Observable<any> {
     return this.http.patch(`https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/content/${id}.json`, {
       "isBookmarked": value

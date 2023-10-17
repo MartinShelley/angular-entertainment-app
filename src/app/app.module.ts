@@ -11,6 +11,7 @@ import { ThumbnailComponent } from './shared/thumbnail/thumbnail.component';
 import { SearchComponent } from './shared/search/search.component';
 import { MoviesComponent } from './movies/movies.component';
 import { TvSeriesComponent } from './tv-series/tv-series.component';
+import { BookmarksComponent } from './bookmarks/bookmarks.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TvSeriesComponent } from './tv-series/tv-series.component';
     ThumbnailComponent,
     SearchComponent,
     MoviesComponent,
-    TvSeriesComponent
+    TvSeriesComponent,
+    BookmarksComponent
   ],
   imports: [
     BrowserModule,
