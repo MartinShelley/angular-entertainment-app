@@ -1,14 +1,20 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { map } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 
 import { Media } from "./media.model";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 
 export class MediaService {
 
-  constructor(private http: HttpClient) {}
+  mediaDataSubject = new BehaviorSubject<Media[]>([]);
+  mediaData = this.mediaDataSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.fetchAllMedia().subscribe(data => this.mediaDataSubject.next(data));
+  }
 
   fetchAllMedia() {
     return this.http.get<{ [key: number]: Media}>('https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/content.json')
@@ -20,30 +26,41 @@ export class MediaService {
         }
       }
       return mediaArray;
-    }))
+    }),
+    catchError(error => {
+      console.error('Failed to fetch data:', error);
+      return [];
+      })
+    )
   }
 
   fetchMovies() {
-    return this.fetchAllMedia().pipe(
+    return this.mediaData.pipe(
       map((data) => data.filter(media => media.category === 'Movie'))
     );
   }
 
   fetchRecommended() {
-    return this.fetchAllMedia().pipe(
+    return this.mediaData.pipe(
       map((data) => data.filter(media => media.isTrending === false))
     );
   }
 
   fetchTrending() {
-    return this.fetchAllMedia().pipe(
+    return this.mediaData.pipe(
       map((data) => data.filter(media => media.isTrending === true))
     );
   }
 
   fetchTVShows() {
-    return this.fetchAllMedia().pipe(
+    return this.mediaData.pipe(
       map((data) => data.filter(media => media.category === 'TV Series'))
     );
+  }
+
+  setBookmark(id: number, value: boolean): Observable<any> {
+    return this.http.patch(`https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/content/${id}.json`, {
+      "isBookmarked": value
+    });
   }
 }
