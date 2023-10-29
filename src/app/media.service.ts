@@ -8,9 +8,8 @@ import { BehaviorSubject, Observable } from "rxjs";
 @Injectable({providedIn: 'root'})
 
 export class MediaService {
-
   mediaDataSubject = new BehaviorSubject<Media[]>([]);
-  mediaData = this.mediaDataSubject.asObservable();
+  searchValueSubject = new BehaviorSubject<string>('');
 
   constructor(private http: HttpClient) {
     this.fetchAllMedia().subscribe(data => this.mediaDataSubject.next(data));
@@ -30,42 +29,41 @@ export class MediaService {
     catchError(error => {
       console.error('Failed to fetch data:', error);
       return [];
-      })
-    )
+    }))
   }
 
   fetchMovies() {
-    return this.mediaData.pipe(
+    return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.category === 'Movie'))
     );
   }
 
   fetchRecommended() {
-    return this.mediaData.pipe(
+    return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.isTrending === false))
     );
   }
 
   fetchTrending() {
-    return this.mediaData.pipe(
+    return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.isTrending === true))
     );
   }
 
   fetchTVShows() {
-    return this.mediaData.pipe(
+    return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.category === 'TV Series'))
     );
   }
 
   fetchBookmarkedMovies() {
-    return this.mediaData.pipe(
+    return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.isBookmarked === true && media.category === 'Movie'))
     );
   }
 
   fetchBookmarkedTVSeries() {
-    return this.mediaData.pipe(
+    return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.isBookmarked === true && media.category === 'TV Series'))
     );
   }
@@ -75,4 +73,9 @@ export class MediaService {
       "isBookmarked": value
     });
   }
+
+  setSearchValue(value: string) {
+    this.searchValueSubject.next(value);
+  }
+
 }

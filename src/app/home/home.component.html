@@ -1,8 +1,12 @@
+<app-search placeholderText="Search for movies or TV series"></app-search>
 <h2>Trending</h2>
-<div class="trending swiper-container">
-  <div class="swiper-wrapper">
-    <app-thumbnail class="swiper-slide" *ngFor="let item of trending" [content]="item"
-      [trending]="item.isTrending"></app-thumbnail>
+<div class="swiper">
+  <div class="trending swiper-container">
+    <div class="swiper-wrapper">
+      <app-thumbnail class="swiper-slide" *ngFor="let item of trending" [content]="item"
+        [trending]="item.isTrending"></app-thumbnail>
+    </div>
+    <!-- <div class="swiper-scrollbar"></div> -->
   </div>
 </div>
 <h2>Recommended for you</h2>

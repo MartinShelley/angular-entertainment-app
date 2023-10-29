@@ -3,7 +3,6 @@ import { Swiper } from 'swiper';
 
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -26,13 +25,23 @@ export class HomeComponent implements OnInit {
     this.mediaService.fetchRecommended().subscribe((media) => {
       this.recommended = media;
     })
+
+    this.mediaService.searchValueSubject.subscribe((data) => {
+      console.log(data);
+    })
   }
 
   private initSwiper(): void {
     this.mySwiper = new Swiper('.swiper-container', {
       // Swiper configuration options here
+      direction: 'horizontal',
       slidesPerView: 2.5,
       spaceBetween: 40,
+      scrollbar: {
+        el: '.swiper-scrollbar',
+        draggable: true,
+        dragSize: 'auto'
+      },
       // navigation: {
       //   nextEl: '.swiper-button-next',
       //   prevEl: '.swiper-button-prev'

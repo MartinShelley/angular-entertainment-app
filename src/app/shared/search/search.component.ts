@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { MediaService } from 'src/app/media.service';
 
 @Component({
   selector: 'app-search',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
+  @Input() placeholderText: string;
+  searchValue: string;
 
+  constructor(private mediaService: MediaService) {}
+
+  setSearchValue() {
+    this.mediaService.setSearchValue(this.searchValue);
+  }
 }

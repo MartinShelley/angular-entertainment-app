@@ -9,3 +9,14 @@ h2 {
   display: flex;
   overflow-x: hidden;
 }
+
+
+.swiper-container > .swiper-scrollbar {
+  background: #d6d6d6;
+  border-radius: 2px;
+  height: 5px;
+  width: 200px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
