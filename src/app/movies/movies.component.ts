@@ -9,12 +9,26 @@ import { MediaService } from '../media.service';
 })
 export class MoviesComponent implements OnInit {
   movies: Media[] = [];
+  filteredArray: Media[] = [];
+  searchTerm: string;
 
   constructor(private mediaService: MediaService){}
 
   ngOnInit(): void {
     this.mediaService.fetchMovies().subscribe((media) => {
       this.movies = media;
-    })  
+    });
+    
+    this.mediaService.searchValueSubject.subscribe((term) => {
+      this.searchTerm = term;
+      this.searchResults();
+    })
+  }
+
+  searchResults() {
+    this.filteredArray = this.movies.filter((movie) => {
+      console.log(movie);
+      return movie.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
   }
 }
