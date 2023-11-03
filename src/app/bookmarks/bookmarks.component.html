@@ -1,9 +1,3 @@
 <app-search placeholderText="Search for bookmarked shows"></app-search>
-<h2>Bookmarked Movies</h2>
-<div class="grid-layout">
-  <app-thumbnail *ngFor="let item of bookmarkedMovies" [content]="item"></app-thumbnail>
-</div>
-<h2>Bookmarked TV Series</h2>
-<div class="grid-layout">
-  <app-thumbnail *ngFor="let item of bookmarkedTVSeries" [content]="item"></app-thumbnail>
-</div>
+<app-grid-section title="Bookmarked Movies" [array]="bookmarkedMovies"></app-grid-section>
+<app-grid-section title="Bookmarked TV Series" [array]="bookmarkedTVSeries"></app-grid-section>

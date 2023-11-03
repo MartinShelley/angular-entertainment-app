@@ -13,6 +13,7 @@ import { SearchComponent } from './shared/search/search.component';
 import { MoviesComponent } from './movies/movies.component';
 import { TvSeriesComponent } from './tv-series/tv-series.component';
 import { BookmarksComponent } from './bookmarks/bookmarks.component';
+import { GridSectionComponent } from './shared/grid-section/grid-section.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BookmarksComponent } from './bookmarks/bookmarks.component';
     SearchComponent,
     MoviesComponent,
     TvSeriesComponent,
-    BookmarksComponent
+    BookmarksComponent,
+    GridSectionComponent
   ],
   imports: [
     BrowserModule,

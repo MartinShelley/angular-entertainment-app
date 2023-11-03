@@ -1,0 +1,4 @@
+<h2 *ngIf="title">{{ title }}</h2>
+<div class="grid-layout">
+  <app-thumbnail *ngFor="let item of array" [content]="item"></app-thumbnail>
+</div>
