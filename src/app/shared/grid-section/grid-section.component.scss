@@ -1,0 +1,10 @@
+@import '_mixins.scss';
+
+h2 {
+  @include heading-large;
+  margin-top: 35px;
+}
+
+.grid-layout {
+  margin-top: 25px;
+}

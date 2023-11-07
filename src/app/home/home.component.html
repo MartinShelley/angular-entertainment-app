@@ -1,5 +1,5 @@
 <app-search placeholderText="Search for movies or TV series"></app-search>
-<h2>Trending</h2>
+<h2 class="trending-heading">Trending</h2>
 <div class="swiper">
   <div class="trending swiper-container">
     <div class="swiper-wrapper">
@@ -9,7 +9,4 @@
     <!-- <div class="swiper-scrollbar"></div> -->
   </div>
 </div>
-<h2>Recommended for you</h2>
-<div class="grid-layout">
-  <app-thumbnail *ngFor="let item of recommended" [content]="item" [trending]="item.isTrending"></app-thumbnail>
-</div>
+<app-grid-section title="Recommended for you" [array]="recommended"></app-grid-section>

@@ -9,7 +9,7 @@ import { MediaService } from 'src/app/media.service';
 })
 export class ThumbnailComponent implements OnInit{
   @Input() content: Media;
-  @Input() trending: boolean;
+  @Input() trending?: boolean;
 
   constructor(private mediaService: MediaService) {}
 
