@@ -9,6 +9,8 @@ import { AuthService } from './auth.service';
   styleUrls: ['./authentication.component.scss']
 })
 export class AuthenticationComponent {
+  authMethod: string = 'Login';
+  buttonText: string;
 
   constructor(private authService: AuthService) {}
 

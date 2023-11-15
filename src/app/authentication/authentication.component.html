@@ -1,8 +1,25 @@
-<!-- <form #authForm="ngForm" (submit)="onSubmit(authForm)">
-  <label for="email">Email</label>
-  <input type="email" id="email" ngModel />
-  <label for="password">Password</label>
-  <input type="password" id="password" ngModel />
-  <button type="submit">Submit</button>
-</form> -->
-<button type="button" (click)="githubLogin()">GitHub</button>
+<div class="auth-container">
+  <div class="auth-container-wrapper">
+    <img src="assets/logo.svg" />
+      <div class="form-wrapper" *ngIf="authMethod === 'Login'">
+        <h1>Login</h1>
+        <form #loginForm="ngForm" (submit)="onSubmit(loginForm)">
+          <input type="email" id="loginEmail" placeholder="Email address" ngModel />
+          <input type="password" id="loginPassword" placeholder="Password" ngModel />
+          <button id="loginButton" class="submit-button" type="submit">Login to your account</button>
+        </form>
+        <span>Don't have an account? <span>Sign Up</span></span>
+        <!-- <button type="button" (click)="githubLogin()">Login via GitHub</button> -->
+      </div>
+      <div class="form-wrapper" *ngIf="authMethod === 'SignUp'">
+        <h1>Sign Up</h1>
+        <form #signupForm="ngForm" (submit)="onSubmit(signupForm)">
+          <input type="email" id="signupEmail" placeholder="Email address" ngModel />
+          <input type="password" id="signupPassword" placeholder="Password" ngModel />
+          <input type="password" id="repeatPassword" placeholder="Repeat password" ngModel />
+          <button id="signupButton" class="submit-button" type="submit">Create an account</button>
+        </form>
+        <span>Already have an account? <span>Login</span></span>
+      </div>
+  </div>
+</div>
