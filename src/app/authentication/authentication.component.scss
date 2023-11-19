@@ -62,12 +62,21 @@
         margin-top: 24px;
       }
 
-      span {
+      p {
         display: flex;
         justify-content: center;
         @include body-medium;
         text-align: center;
         margin-top: 24px;
+
+        span {
+          margin-left: 8px;
+          color: $red;
+          cursor: pointer;
+          &:hover {
+            color: #fff;
+          }
+        }
       }
     }
   }

@@ -1,25 +1,25 @@
 <div class="auth-container">
   <div class="auth-container-wrapper">
     <img src="assets/logo.svg" />
-      <div class="form-wrapper" *ngIf="authMethod === 'Login'">
-        <h1>Login</h1>
-        <form #loginForm="ngForm" (submit)="onSubmit(loginForm)">
-          <input type="email" id="loginEmail" placeholder="Email address" ngModel />
-          <input type="password" id="loginPassword" placeholder="Password" ngModel />
+    <div class="form-wrapper">
+      <h1>{{ authMethod }}</h1>
+      <form #authForm="ngForm" (submit)="onSubmit(authForm)">
+        <ng-container *ngIf="authMethod === 'Login'">
+          <input type="email" id="loginEmail" placeholder="Email address" name="email" required ngModel />
+          <input type="password" id="loginPassword" placeholder="Password" name="password" required ngModel />
           <button id="loginButton" class="submit-button" type="submit">Login to your account</button>
-        </form>
-        <span>Don't have an account? <span>Sign Up</span></span>
-        <!-- <button type="button" (click)="githubLogin()">Login via GitHub</button> -->
-      </div>
-      <div class="form-wrapper" *ngIf="authMethod === 'SignUp'">
-        <h1>Sign Up</h1>
-        <form #signupForm="ngForm" (submit)="onSubmit(signupForm)">
-          <input type="email" id="signupEmail" placeholder="Email address" ngModel />
-          <input type="password" id="signupPassword" placeholder="Password" ngModel />
-          <input type="password" id="repeatPassword" placeholder="Repeat password" ngModel />
+        </ng-container>
+        <ng-container *ngIf="authMethod === 'Sign Up'">
+          <input type="email" id="signupEmail" placeholder="Email address" name="email" required ngModel />
+          <input type="password" id="signupPassword" placeholder="Password" name="password" required ngModel />
+          <input type="password" id="repeatPassword" placeholder="Repeat password" name="repeatPassword" required
+            ngModel />
           <button id="signupButton" class="submit-button" type="submit">Create an account</button>
-        </form>
-        <span>Already have an account? <span>Login</span></span>
-      </div>
+        </ng-container>
+      </form>
+      <p *ngIf="authMethod === 'Sign Up'">Already have an account? <span (click)="toggleAuthMode()">Login</span></p>
+      <p *ngIf="authMethod === 'Login'">Don't have an account? <span (click)="toggleAuthMode()">Sign Up</span></p>
+      <!-- <button type="button" (click)="githubLogin()">Login via GitHub</button> -->
+    </div>
   </div>
 </div>

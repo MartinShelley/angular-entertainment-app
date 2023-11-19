@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,7 @@ import { MoviesComponent } from './movies/movies.component';
 import { TvSeriesComponent } from './tv-series/tv-series.component';
 import { BookmarksComponent } from './bookmarks/bookmarks.component';
 import { GridSectionComponent } from './shared/grid-section/grid-section.component';
+import { AuthInterceptorService } from './authentication/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,11 @@ import { GridSectionComponent } from './shared/grid-section/grid-section.compone
     FormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 
