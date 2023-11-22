@@ -18,7 +18,7 @@ type AuthMode = 'Sign Up' | 'Login';
 export class AuthenticationComponent implements OnInit{
   auth: Auth;
   user: User | null;
-  authMethod: AuthMode = 'Sign Up';
+  authMethod: AuthMode = 'Login';
   authObservable: Observable<Record<string, any>>;
   buttonText: string;
 

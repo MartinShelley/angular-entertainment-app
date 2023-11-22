@@ -1,7 +1,12 @@
-<app-search placeholderText="Search for movies"></app-search>
-<ng-container *ngIf="searchTerm.length === 0">
-  <app-grid-section title="Movies" [array]="movies"></app-grid-section>
-</ng-container>
-<ng-container *ngIf="searchTerm.length > 0">
-  <app-grid-section [array]="filteredArray"></app-grid-section>
-</ng-container>
+<div id="app-container">
+  <app-menu></app-menu>
+  <div id="app-view">
+    <app-search placeholderText="Search for movies"></app-search>
+    <ng-container *ngIf="searchTerm.length === 0">
+      <app-grid-section title="Movies" [array]="movies"></app-grid-section>
+    </ng-container>
+    <ng-container *ngIf="searchTerm.length > 0">
+      <app-grid-section [array]="filteredArray"></app-grid-section>
+    </ng-container>
+  </div>
+</div>

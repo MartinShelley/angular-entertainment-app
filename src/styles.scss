@@ -13,6 +13,19 @@ html {
   overflow-x: hidden;
 }
 
+#app-container {
+  display: flex;
+  margin: 32px;
+  position: relative;
+
+  #app-view {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 132px);
+    margin-left: 132px;
+  }
+}
+
 .grid-layout {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
