@@ -13,7 +13,7 @@ const routes: Routes = [
   {path: 'tv-shows', component: TvSeriesComponent, canActivate: [AuthGuard]},
   {path: 'bookmarks', component: BookmarksComponent, canActivate: [AuthGuard]},
   {path: 'auth', component: AuthenticationComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'}
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
 ];
 
 @NgModule({

@@ -1,69 +1,70 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { getAuth, signInWithRedirect, GithubAuthProvider, signInWithPopup, onAuthStateChanged  } from "firebase/auth";
-import { BehaviorSubject, catchError, throwError } from "rxjs";
-import { tap } from "rxjs/operators";
-
-import { firebaseConfig } from "src/environments/firebaseConfig";
+import { getAuth, GithubAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { BehaviorSubject, catchError, throwError, from } from "rxjs";
+import { tap,  } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  userSubject = new BehaviorSubject<Record<string, any> | null>(null);
-  // private token: any;
-  private provider = new GithubAuthProvider();
-  private auth = getAuth();
-  constructor(private http: HttpClient) {}
+  user = new BehaviorSubject<Record<string, any> | null>(null);
+  auth = getAuth();
+  authState: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(null);
+
+  constructor() {}
 
   login(email: string, password: string) {
-    return this.http.post<Record<string, any>>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseConfig.apiKey}`, {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    })
+    return from(signInWithEmailAndPassword(this.auth, email, password))
     .pipe(
-      catchError(error => throwError(() => error)), 
-      tap(data => {
-        this.userSubject.next({
-          email: data['email'],
-          idToken: data['idToken'],
-          expiresIn: +data['expiresIn']
+      catchError(error => throwError(() => error)),
+      tap(userCredential => {
+        userCredential.user.getIdToken(false).then((token) => {
+          this.authState.next(true);
+          this.user.next({
+            'email': userCredential.user.email,
+            'idToken': token
+          })
         })
       })
-    );
+    )
   }
 
   signUp(email: string, password: string) {
-    return this.http.post<Record<string, any>>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`, {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    })
+    return from(createUserWithEmailAndPassword(this.auth, email, password))
     .pipe(
-      catchError(error => throwError(() => error)), 
-      tap(data => {
-        this.userSubject.next({
-          email: data['email'],
-          idToken: data['idToken'],
-          expiresIn: +data['expiresIn']
+      catchError(error => throwError(() => error)),
+      tap(userCredential => {
+        userCredential.user.getIdToken(false).then((token) => {
+          this.authState.next(true);
+          this.user.next({
+            'email': userCredential.user.email,
+            'idToken': token
+          })
         })
       })
-    );
+    )
   }
 
-  // gitHubLogin() {
-  //   const auth = getAuth();
-  //   // signInWithRedirect(auth, this.provider)
-  //   signInWithPopup(auth, this.provider)
-  //   .then((result) => {
-  //     const credential = GithubAuthProvider.credentialFromResult(result);
-  //     if (credential) {
-  //       this.token = credential.accessToken;
-  //       // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-  //       console.log(credential);
-  //     }
-  //   })
-  // }
+  private handleUserAuthentication(user: any) {
+    user.getIdToken(false).then((token: string) => {
+      this.authState.next(true);
+      this.user.next({
+        'email': user.email,
+        'idToken': token
+      });
+    });
+  }
+
+  checkAuthenticationStatus() {
+    onAuthStateChanged(this.auth, user => {
+      if (user) {
+        this.handleUserAuthentication(user);
+      }
+      else {
+        this.authState.next(false);
+      }
+    });
+  }
 }

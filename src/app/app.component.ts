@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from './authentication/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +10,22 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  title = 'entertainment-web-app';
-  // isAuthPage: boolean = false;
-
-  constructor(private location: Location, private router: Router) {
-  //   console.log(this.router);
-    console.log(location.path());
-  }
+  private authStatusSubscription: Subscription | null = null;
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    console.log("ngOnInit app component");
+
+    this.authStatusSubscription = this.authService.authState.subscribe((result) => {
+      if (result === true) {
+        this.router.navigate(['/home']);
+        this.authStatusSubscription?.unsubscribe();
+      } else if (result === false) {
+        this.router.navigate(['/auth']);
+        this.authStatusSubscription?.unsubscribe();
+      }
+    });
+
+    this.authService.checkAuthenticationStatus();
   }
 }

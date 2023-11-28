@@ -1,9 +1,8 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { getAuth, onAuthStateChanged, Auth, User, createUserWithEmailAndPassword } from 'firebase/auth';
 
 // import { GithubAuthProvider } from 'firebase/auth';
 
@@ -15,24 +14,12 @@ type AuthMode = 'Sign Up' | 'Login';
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss']
 })
-export class AuthenticationComponent implements OnInit{
-  auth: Auth;
-  user: User | null;
+export class AuthenticationComponent {
   authMethod: AuthMode = 'Login';
   authObservable: Observable<Record<string, any>>;
   buttonText: string;
 
   constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.auth = getAuth();
-
-    onAuthStateChanged(this.auth, (user) => {
-      console.log(this.auth);
-      this.user = user;
-      console.log(this.user);
-    })
-  }
 
   onSubmit(form: NgForm) {
     if(form.invalid) {
@@ -66,9 +53,5 @@ export class AuthenticationComponent implements OnInit{
   toggleAuthMode() {
     this.authMethod = this.authMethod === 'Sign Up' ? 'Login' : 'Sign Up';
   }
-
-  // githubLogin() {
-  //   this.authService.gitHubLogin();
-  // }
 
 }
