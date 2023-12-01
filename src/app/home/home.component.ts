@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Swiper } from 'swiper';
+import { map } from 'rxjs/operators';
 
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
@@ -17,23 +18,29 @@ export class HomeComponent implements OnInit {
   constructor(private mediaService: MediaService) {}
 
   ngOnInit(): void {
-    this.mediaService.fetchTrending().subscribe((media) => {
-      this.trending = media;
-      this.initSwiper();
-    })
+    this.mediaService.mediaDataSubject.
+    pipe(
+      map((data) => data.filter(media => media.isTrending === true))
+    )
+    .subscribe(((trendingMedia) => {
+      this.trending = trendingMedia;
+      if(this.trending.length > 2) {
+        this.initSwiper();
+      }
+      console.log(this.trending);
+    }));
 
     this.mediaService.fetchRecommended().subscribe((media) => {
       this.recommended = media;
-    })
+    });
 
-    this.mediaService.searchValueSubject.subscribe((data) => {
-      console.log(data);
-    })
+    // this.mediaService.searchValueSubject.subscribe((data) => {
+    //   console.log(data);
+    // })
   }
 
   private initSwiper(): void {
     this.mySwiper = new Swiper('.swiper-container', {
-      // Swiper configuration options here
       direction: 'horizontal',
       slidesPerView: 2.5,
       spaceBetween: 40,

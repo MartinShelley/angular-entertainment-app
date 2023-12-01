@@ -44,12 +44,6 @@ export class MediaService {
     );
   }
 
-  fetchTrending() {
-    return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.isTrending === true))
-    );
-  }
-
   fetchTVShows() {
     return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.category === 'TV Series'))
