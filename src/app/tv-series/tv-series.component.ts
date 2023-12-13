@@ -9,13 +9,25 @@ import { MediaService } from '../media.service';
 })
 export class TvSeriesComponent {
   tvSeries: Media[] = [];
+  filteredArray: Media[] = [];
+  searchTerm: string;
   
   constructor(private mediaService: MediaService){}
 
   ngOnInit(): void {
-    this.mediaService.fetchTVShows().subscribe((media) => {
+    this.mediaService.filterMedia('TV Series').subscribe((media) => {
       this.tvSeries = media;
-    })  
+    });
+
+    this.mediaService.searchValueSubject.subscribe((term) => {
+      this.searchTerm = term;
+      this.searchResults();
+    })
   }
 
+  searchResults() {
+    this.filteredArray = this.tvSeries.filter((show) => {
+      return show.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+  }
 }

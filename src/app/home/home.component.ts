@@ -11,44 +11,54 @@ import { MediaService } from '../media.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  allMedia: Media[] = [];
   recommended: Media[] = [];
   trending: Media[] = [];
   mySwiper: Swiper | undefined;
+  filteredArray: Media[] = [];
+  searchTerm: string;
 
   constructor(private mediaService: MediaService) {}
 
   ngOnInit(): void {
-    this.mediaService.mediaDataSubject.
-    pipe(
-      map((data) => data.filter(media => media.isTrending === true))
-    )
-    .subscribe(((trendingMedia) => {
-      this.trending = trendingMedia;
-      if(this.trending.length > 2) {
-        this.initSwiper();
-      }
-      console.log(this.trending);
-    }));
+    this.mediaService.fetchAllMedia().subscribe((media) => {
+      this.allMedia = media;
+    })
 
-    this.mediaService.fetchRecommended().subscribe((media) => {
+    this.mediaService.fetchHomePageMedia(true).subscribe((media) => {
+      this.trending = media;
+      this.initSwiper();
+    })
+
+    this.mediaService.fetchHomePageMedia(false).subscribe((media) => {
       this.recommended = media;
     });
+
+    this.mediaService.searchValueSubject.subscribe((term) => {
+      this.searchTerm = term;
+      this.searchResults();
+    })
 
     // this.mediaService.searchValueSubject.subscribe((data) => {
     //   console.log(data);
     // })
   }
 
+  searchResults() {
+    this.filteredArray = this.allMedia.filter((media) => {
+      return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+  }
+
   private initSwiper(): void {
     this.mySwiper = new Swiper('.swiper-container', {
-      direction: 'horizontal',
-      slidesPerView: 2.5,
+      slidesPerView: 3,
       spaceBetween: 40,
-      scrollbar: {
-        el: '.swiper-scrollbar',
-        draggable: true,
-        dragSize: 'auto'
-      },
+      // scrollbar: {
+      //   el: '.swiper-scrollbar',
+      //   draggable: true,
+      //   dragSize: 'auto'
+      // },
       // navigation: {
       //   nextEl: '.swiper-button-next',
       //   prevEl: '.swiper-button-prev'

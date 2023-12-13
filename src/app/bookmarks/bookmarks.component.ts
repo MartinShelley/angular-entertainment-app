@@ -15,11 +15,10 @@ export class BookmarksComponent implements OnInit{
   constructor(private mediaService: MediaService){}
 
   ngOnInit(): void {
-    this.mediaService.fetchBookmarkedMovies().subscribe((media) => {
+    this.mediaService.fetchBookmarkedMedia('Movie').subscribe((media) => {
       this.bookmarkedMovies = media;
-    });
-    
-    this.mediaService.fetchBookmarkedTVSeries().subscribe((media) => {
+    })
+    this.mediaService.fetchBookmarkedMedia('TV Series').subscribe((media) => {
       this.bookmarkedTVSeries = media;
     })
   }

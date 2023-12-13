@@ -32,33 +32,21 @@ export class MediaService {
     }))
   }
 
-  fetchMovies() {
+  filterMedia(mediaType: string) {
     return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.category === 'Movie'))
+      map((data) => data.filter(media => media.category === mediaType))
     );
   }
 
-  fetchRecommended() {
+  fetchHomePageMedia(isTrending: boolean) {
     return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.isTrending === false))
+      map((data) => data.filter(media => media.isTrending === isTrending))
     );
   }
 
-  fetchTVShows() {
+  fetchBookmarkedMedia(mediaType: string) {
     return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.category === 'TV Series'))
-    );
-  }
-
-  fetchBookmarkedMovies() {
-    return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.isBookmarked === true && media.category === 'Movie'))
-    );
-  }
-
-  fetchBookmarkedTVSeries() {
-    return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.isBookmarked === true && media.category === 'TV Series'))
+      map((data) => data.filter(media => media.isBookmarked === true && media.category === mediaType))
     );
   }
 
@@ -71,5 +59,4 @@ export class MediaService {
   setSearchValue(value: string) {
     this.searchValueSubject.next(value);
   }
-
 }

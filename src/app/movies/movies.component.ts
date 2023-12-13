@@ -15,7 +15,7 @@ export class MoviesComponent implements OnInit {
   constructor(private mediaService: MediaService){}
 
   ngOnInit(): void {
-    this.mediaService.fetchMovies().subscribe((media) => {
+    this.mediaService.filterMedia('Movie').subscribe((media) => {
       this.movies = media;
     });
     
@@ -27,7 +27,6 @@ export class MoviesComponent implements OnInit {
 
   searchResults() {
     this.filteredArray = this.movies.filter((movie) => {
-      console.log(movie);
       return movie.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
   }
