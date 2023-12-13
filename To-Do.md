@@ -1,0 +1,6 @@
+- Fix Authentication via email
+- Github login
+- Login/Sign up Errors
+- When searching, add "No Results found message"
+- Mobile/Tablet views
+- Sort out all hover states
