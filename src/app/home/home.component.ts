@@ -1,47 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Swiper } from 'swiper';
 import { map } from 'rxjs/operators';
 
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   allMedia: Media[] = [];
   recommended: Media[] = [];
   trending: Media[] = [];
   mySwiper: Swiper | undefined;
   filteredArray: Media[] = [];
   searchTerm: string;
+  private subscriptions: Subscription[];
 
   constructor(private mediaService: MediaService) {}
 
   ngOnInit(): void {
-    this.mediaService.fetchAllMedia().subscribe((media) => {
-      this.allMedia = media;
-    })
-
+    console.log("ng oninit");
     this.mediaService.fetchHomePageMedia(true).subscribe((media) => {
       this.trending = media;
       this.initSwiper();
     })
-
+    
     this.mediaService.fetchHomePageMedia(false).subscribe((media) => {
       this.recommended = media;
     });
-
-    this.mediaService.searchValueSubject.subscribe((term) => {
+    
+    this.mediaService.fetchAllMedia().subscribe((media) => {
+      this.allMedia = media;
+    });
+    
+    const searchSubscription = this.mediaService.searchValueSubject.subscribe((term) => {
       this.searchTerm = term;
       this.searchResults();
-    })
+    });
 
-    // this.mediaService.searchValueSubject.subscribe((data) => {
-    //   console.log(data);
-    // })
+    this.subscriptions.push(searchSubscription);
   }
 
   searchResults() {
@@ -68,5 +69,9 @@ export class HomeComponent implements OnInit {
       //   clickable: true
       // }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
