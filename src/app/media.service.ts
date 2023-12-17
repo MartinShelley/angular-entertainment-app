@@ -59,4 +59,8 @@ export class MediaService {
   setSearchValue(value: string) {
     this.searchValueSubject.next(value);
   }
+
+  resetSearch() {
+    this.searchValueSubject.next('');
+  }
 }
