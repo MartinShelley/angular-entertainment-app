@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   allMedia: Media[] = [];
   recommended: Media[] = [];
   trending: Media[] = [];
-  mySwiper: Swiper | undefined;
+  mySwiper: Swiper;
   filteredArray: Media[] = [];
   searchTerm: string;
 

@@ -1,0 +1,12 @@
+<div id="app-container">
+  <app-menu></app-menu>
+  <div id="app-view">
+    <app-search [placeholderText]="'Search for' + category"></app-search>
+    <ng-container *ngIf="searchTerm.length === 0">
+      <app-grid-section [title]="category === 'Movie' ? 'Movies' : 'Tv Series'" [array]="categoryMedia"></app-grid-section>
+    </ng-container>
+    <ng-container *ngIf="searchTerm.length > 0">
+      <app-grid-section [title]="category === 'Movie' ? 'Movies' : 'Tv Series'" [array]="filteredArray"></app-grid-section>
+    </ng-container>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-movies',
@@ -12,7 +14,7 @@ export class MoviesComponent implements OnInit {
   filteredArray: Media[] = [];
   searchTerm: string;
 
-  constructor(private mediaService: MediaService){}
+  constructor(private mediaService: MediaService, private router: Router){}
 
   ngOnInit(): void {
     this.mediaService.filterMedia('Movie').subscribe((media) => {

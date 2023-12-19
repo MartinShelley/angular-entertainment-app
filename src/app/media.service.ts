@@ -34,8 +34,8 @@ export class MediaService {
 
   filterMedia(mediaType: string) {
     return this.mediaDataSubject.pipe(
-      map((data) => data.filter(media => media.category === mediaType))
-    );
+      map((data) => data.filter(media => media.category === mediaType)      
+    ))
   }
 
   fetchHomePageMedia(isTrending: boolean) {

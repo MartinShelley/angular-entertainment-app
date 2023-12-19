@@ -15,6 +15,7 @@ import { TvSeriesComponent } from './tv-series/tv-series.component';
 import { BookmarksComponent } from './bookmarks/bookmarks.component';
 import { GridSectionComponent } from './shared/grid-section/grid-section.component';
 import { AuthInterceptorService } from './authentication/auth-interceptor.service';
+import { MediaCategoryComponent } from './media-category/media-category.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthInterceptorService } from './authentication/auth-interceptor.servic
     MoviesComponent,
     TvSeriesComponent,
     BookmarksComponent,
-    GridSectionComponent
+    GridSectionComponent,
+    MediaCategoryComponent
   ],
   imports: [
     BrowserModule,
