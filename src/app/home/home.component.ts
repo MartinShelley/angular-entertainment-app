@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
     this.filteredArray = this.allMedia.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
+    console.log(this.filteredArray);
   }
 
   private initSwiper(): void {

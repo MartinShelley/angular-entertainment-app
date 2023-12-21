@@ -2,11 +2,15 @@
   <app-menu></app-menu>
   <div id="app-view">
     <app-search [placeholderText]="'Search for ' +  (category | mediaCategoryLabel) "></app-search>
-    <ng-container *ngIf="searchTerm.length === 0">
+    <ng-container *ngIf="!searchTerm">
       <app-grid-section [title]="(category | mediaCategoryLabel) " [array]="categoryMedia"></app-grid-section>
     </ng-container>
-    <ng-container *ngIf="searchTerm.length > 0">
+    <ng-container *ngIf="searchTerm && filteredArray.length > 0">
+      <h2 class="heading">Found {{ filteredArray.length }} results for '{{ searchTerm }}' </h2>
       <app-grid-section [title]=" (category | mediaCategoryLabel) " [array]="filteredArray"></app-grid-section>
+    </ng-container>
+    <ng-container *ngIf="searchTerm && filteredArray.length == 0">
+      <h2 class="heading">No Results Found!</h2>
     </ng-container>
   </div>
 </div>

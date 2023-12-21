@@ -12,7 +12,8 @@ export class BookmarksComponent implements OnInit, OnDestroy{
   allMedia: Media[] = [];
   bookmarkedMovies: Media[] = [];
   bookmarkedTVSeries: Media[] = [];
-  filteredArray: Media[] = [];
+  filteredMovies: Media[] = [];
+  filteredTVSeries: Media[] = [];
   searchTerm: string;
   
   constructor(private mediaService: MediaService){}
@@ -34,7 +35,11 @@ export class BookmarksComponent implements OnInit, OnDestroy{
   }
 
   searchResults() {
-    this.filteredArray = this.allMedia.filter((media) => {
+    this.filteredMovies = this.bookmarkedMovies.filter((media) => {
+      return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+
+    this.filteredTVSeries = this.bookmarkedTVSeries.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
   }

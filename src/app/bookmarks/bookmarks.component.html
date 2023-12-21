@@ -2,7 +2,18 @@
   <app-menu></app-menu>
   <div id="app-view">
     <app-search placeholderText="Search for bookmarked shows"></app-search>
-    <app-grid-section title="Bookmarked Movies" [array]="bookmarkedMovies"></app-grid-section>
-    <app-grid-section title="Bookmarked TV Series" [array]="bookmarkedTVSeries"></app-grid-section>
+    <ng-container *ngIf="!searchTerm">
+      <app-grid-section title="Bookmarked Movies" [array]="bookmarkedMovies"></app-grid-section>
+      <app-grid-section title="Bookmarked TV Series" [array]="bookmarkedTVSeries"></app-grid-section>
+    </ng-container>
+    <ng-container *ngIf="searchTerm && filteredMovies.length > 0">
+      <app-grid-section title="Bookmarked Movies" [array]="filteredMovies"></app-grid-section>
+    </ng-container>
+    <ng-container *ngIf="searchTerm && filteredTVSeries.length > 0">
+      <app-grid-section title="Bookmarked TV Series" [array]="filteredTVSeries"></app-grid-section>
+    </ng-container>
+    <ng-container *ngIf="searchTerm && bookmarkedMovies.length == 0 && bookmarkedTVSeries.length == 0">
+      <h2 class="heading">No Results Found!</h2>
+    </ng-container>
   </div>
 </div>
