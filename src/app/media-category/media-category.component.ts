@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
@@ -16,9 +17,15 @@ export class MediaCategoryComponent implements OnInit{
   searchTerm: string;
   
   constructor(private mediaService: MediaService, private router: Router){
-    this.category = this.router.url.substring(1) === 'tv-series' ? 'TV Series' : 'Movie';
-    this.mediaService.filterMedia(this.category).subscribe((media) => {
-      this.categoryMedia = media;
+    this.router.events
+    .pipe(filter((event: any) => event instanceof NavigationEnd))
+    .subscribe((val) => {
+      this.category = val.url.substring(1) === 'tv-series' ? 'TV Series' : 'Movie';
+      
+      this.mediaService.filterMedia(this.category).subscribe((media) => {
+        console.log(this.category);
+        this.categoryMedia = media;
+      });
     });
   }
   
@@ -28,7 +35,7 @@ export class MediaCategoryComponent implements OnInit{
       this.searchResults();
     })
   }
-  
+
   searchResults() {
     this.filteredArray = this.categoryMedia.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());

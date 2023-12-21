@@ -7,15 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { HomeComponent } from './home/home.component';
-import { MenuComponent } from './shared/menu/menu.component';
-import { ThumbnailComponent } from './shared/thumbnail/thumbnail.component';
-import { SearchComponent } from './shared/search/search.component';
-import { MoviesComponent } from './movies/movies.component';
-import { TvSeriesComponent } from './tv-series/tv-series.component';
+import { MenuComponent } from './shared/components/menu/menu.component';
+import { ThumbnailComponent } from './shared/components/thumbnail/thumbnail.component';
+import { SearchComponent } from './shared/components/search/search.component';
 import { BookmarksComponent } from './bookmarks/bookmarks.component';
-import { GridSectionComponent } from './shared/grid-section/grid-section.component';
+import { GridSectionComponent } from './shared/components/grid-section/grid-section.component';
 import { AuthInterceptorService } from './authentication/auth-interceptor.service';
 import { MediaCategoryComponent } from './media-category/media-category.component';
+import { MediaCategoryLabelPipe } from './shared/pipes/media-category-label.pipe';
 
 @NgModule({
   declarations: [
@@ -25,11 +24,10 @@ import { MediaCategoryComponent } from './media-category/media-category.componen
     MenuComponent,
     ThumbnailComponent,
     SearchComponent,
-    MoviesComponent,
-    TvSeriesComponent,
     BookmarksComponent,
     GridSectionComponent,
-    MediaCategoryComponent
+    MediaCategoryComponent,
+    MediaCategoryLabelPipe
   ],
   imports: [
     BrowserModule,
