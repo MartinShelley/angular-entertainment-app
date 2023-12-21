@@ -33,13 +33,10 @@ export class HomeComponent implements OnInit {
       this.allMedia = media;
     });
     
-    // const searchSubscription = this.mediaService.searchValueSubject.subscribe((term) => {
     this.mediaService.searchValueSubject.subscribe((term) => {
       this.searchTerm = term;
       this.searchResults();
     });
-
-    // this.subscriptions.push(searchSubscription);
   }
 
   searchResults() {

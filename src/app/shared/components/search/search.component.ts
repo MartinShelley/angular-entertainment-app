@@ -15,4 +15,8 @@ export class SearchComponent {
   setSearchValue() {
     this.mediaService.setSearchValue(this.searchValue);
   }
+
+  resetSearchValue() {
+    this.searchValue = '';
+  }
 }

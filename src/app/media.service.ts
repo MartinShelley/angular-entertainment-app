@@ -32,7 +32,7 @@ export class MediaService {
     }))
   }
 
-  filterMedia(mediaType: string) {
+  getMediaByType(mediaType: string) {
     return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.category === mediaType)      
     ))
