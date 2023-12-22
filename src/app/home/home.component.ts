@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Swiper } from 'swiper';
 
 import { Media } from '../media.model';
@@ -9,7 +9,8 @@ import { MediaService } from '../media.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
   allMedia: Media[] = [];
   recommended: Media[] = [];
   trending: Media[] = [];
@@ -18,13 +19,12 @@ export class HomeComponent implements OnInit {
   searchTerm: string;
 
   constructor(private mediaService: MediaService) {}
-
+  
   ngOnInit(): void {
     this.mediaService.fetchHomePageMedia(true).subscribe((media) => {
       this.trending = media;
-      this.initSwiper();
-    })
-    
+    });
+
     this.mediaService.fetchHomePageMedia(false).subscribe((media) => {
       this.recommended = media;
     });
@@ -39,11 +39,14 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.initSwiper();
+  }
+  
   searchResults() {
     this.filteredArray = this.allMedia.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
-    console.log(this.filteredArray);
   }
 
   private initSwiper(): void {
@@ -69,6 +72,10 @@ export class HomeComponent implements OnInit {
   ngOnDestroy(): void {
     if(this.searchTerm) {
       this.mediaService.resetSearch();
+    }
+
+    if(this.mySwiper) {
+      this.mySwiper.destroy(true, true);
     }
   }
 }

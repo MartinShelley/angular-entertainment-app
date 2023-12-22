@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { register } from 'swiper/element/bundle';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,9 @@ import { GridSectionComponent } from './shared/components/grid-section/grid-sect
 import { AuthInterceptorService } from './authentication/auth-interceptor.service';
 import { MediaCategoryComponent } from './media-category/media-category.component';
 import { MediaCategoryLabelPipe } from './shared/pipes/media-category-label.pipe';
+
+//init swiper.js
+register();
 
 @NgModule({
   declarations: [

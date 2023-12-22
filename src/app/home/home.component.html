@@ -16,7 +16,7 @@
       <app-grid-section title="Recommended for you" [array]="recommended"></app-grid-section>
     </ng-container>
     <ng-container *ngIf="searchTerm && filteredArray.length > 0">
-      <h2 class="heading">Found {{ filteredArray.length }} results for '{{ searchTerm }}' </h2>
+      <h2 class="heading">Found {{ filteredArray.length }} results for '{{ searchTerm }}'</h2>
       <app-grid-section [array]="filteredArray"></app-grid-section>
     </ng-container>
     <ng-container *ngIf="searchTerm && filteredArray.length == 0">
