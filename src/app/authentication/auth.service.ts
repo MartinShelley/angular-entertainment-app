@@ -1,38 +1,36 @@
-import { HttpClient } from "@angular/common/http";
-import { Token } from "@angular/compiler";
 import { Injectable, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { getAuth, GithubAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, getIdToken, onIdTokenChanged } from "firebase/auth";
-import { BehaviorSubject, catchError, throwError, from } from "rxjs";
-import { tap,  } from "rxjs/operators";
+import { getAuth, GithubAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { BehaviorSubject, catchError, throwError, from, Subject } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService implements OnInit {
-  user = new BehaviorSubject<Record<string, any> | null>(null);
+  user = new BehaviorSubject<Record<string, string> | null>(null);
   auth = getAuth();
-  authState: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(null);
+  authState = new BehaviorSubject<boolean | null>(null);
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    
+    console.log("current user: ", this.auth.currentUser)
   }
 
   login(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.auth, email, password))
     .pipe(
       catchError(error => throwError(() => error)),
-      tap(userCredential => {
-        userCredential.user.getIdToken(false).then((token) => {
-          this.authState.next(true);
+      tap(response => {
+        response.user.getIdToken(false).then((token) => {
           this.user.next({
-            'email': userCredential.user.email,
-            'idToken': token
+            'userId': response.user.uid,
+            'token': token
           })
         })
+        localStorage.setItem('returningUser', "true");
       })
     )
   }
@@ -41,36 +39,20 @@ export class AuthService implements OnInit {
     return from(createUserWithEmailAndPassword(this.auth, email, password))
     .pipe(
       catchError(error => throwError(() => error)),
-      tap(userCredential => {
-        userCredential.user.getIdToken(false).then((token) => {
-          this.authState.next(true);
+      tap(response => {
+        response.user.getIdToken(false).then((token) => {
           this.user.next({
-            'email': userCredential.user.email,
-            'idToken': token
+            'userId': response.user.uid,
+            'token': token
           })
         })
+        localStorage.setItem('returningUser', "true");
       })
     )
   }
 
-  // private handleUserAuthentication(user: any) {
-  //   user.getIdToken(false).then((token: string) => {
-  //     this.authState.next(true);
-  //     this.user.next({
-  //       'email': user.email,
-  //       'idToken': token
-  //     });
-  //   });
-  // }
-
-  checkAuthenticationStatus() {
-    console.log("checkAuthStatus authService");
-    return new Promise((resolve, reject) => {
-      const unsubscribe = onAuthStateChanged(this.auth, user => {
-        unsubscribe();
-        resolve(user);
-      },
-      reject);
-    })
+  logout() {
+    this.auth.signOut();
+    localStorage.removeItem('returningUser');
   }
 }

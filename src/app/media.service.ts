@@ -1,18 +1,27 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from "rxjs/operators";
 
 import { Media } from "./media.model";
 import { BehaviorSubject, Observable } from "rxjs";
+import { AuthService } from "./authentication/auth.service";
 
 @Injectable({providedIn: 'root'})
 
-export class MediaService {
+export class MediaService implements OnInit{
+  user: Record<string, string> | null;
   mediaDataSubject = new BehaviorSubject<Media[]>([]);
   searchValueSubject = new BehaviorSubject<string>('');
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.fetchAllMedia().subscribe(data => this.mediaDataSubject.next(data));
+  }
+
+  ngOnInit(): void {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+      // console.log("subscribing to user in media service: ", this.user);
+    })
   }
 
   fetchAllMedia() {
@@ -45,6 +54,12 @@ export class MediaService {
   }
 
   fetchBookmarkedMedia(mediaType: string) {
+    // const userId = this.authService.user
+    // return this.http.get(`https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/bookmarks/${this.authService}.json`)
+    // .pipe(map((response) => {
+    //   const bookmarksArray = [];
+
+    // }))
     return this.mediaDataSubject.pipe(
       map((data) => data.filter(media => media.isBookmarked === true && media.category === mediaType))
     );
