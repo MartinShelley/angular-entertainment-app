@@ -1,4 +1,3 @@
-- Fix bookmarks so different users have different bookmarks
 - Add message if no bookmarks
 
 - Fix Authentication via email

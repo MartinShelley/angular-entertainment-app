@@ -4,3 +4,7 @@ h2 {
   @include heading-large;
   margin-top: 35px;
 }
+
+h3 {
+  @include heading-medium;
+}
