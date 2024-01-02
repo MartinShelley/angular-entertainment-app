@@ -14,6 +14,6 @@ export interface Media {
   year: number,
   category: string,
   rating: string,
-  isBookmarked: boolean,
-  isTrending: boolean
+  isTrending: boolean,
+  id?: number
 }

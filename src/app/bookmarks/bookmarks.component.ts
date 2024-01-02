@@ -19,15 +19,12 @@ export class BookmarksComponent implements OnInit, OnDestroy{
   constructor(private mediaService: MediaService){}
 
   ngOnInit(): void {
-    this.mediaService.fetchBookmarkedMedia('Movie').subscribe((media) => {
-      this.bookmarkedMovies = media;
-    })
-    this.mediaService.fetchBookmarkedMedia('TV Series').subscribe((media) => {
-      this.bookmarkedTVSeries = media;
-    })
     this.mediaService.fetchAllMedia().subscribe((media) => {
       this.allMedia = media;
     });
+  
+    this.updateBookmarks();
+    
     this.mediaService.searchValueSubject.subscribe((term) => {
       this.searchTerm = term;
       this.searchResults();
@@ -42,6 +39,24 @@ export class BookmarksComponent implements OnInit, OnDestroy{
     this.filteredTVSeries = this.bookmarkedTVSeries.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
+  }
+
+  updateBookmarks() {
+    this.mediaService.bookmarksArray.subscribe((bookmarks) => {
+      this.bookmarkedMovies = [];
+      this.bookmarkedTVSeries = [];
+
+      if(bookmarks) {
+        bookmarks.forEach((bookmark) => {
+          if(bookmark.category === 'Movie') {
+            this.bookmarkedMovies.push(bookmark);
+          }
+          else if(bookmark.category === 'TV Series') {
+            this.bookmarkedTVSeries.push(bookmark);
+          }
+        })
+      }
+    })
   }
 
   ngOnDestroy(): void {
