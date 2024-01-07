@@ -1,3 +1,4 @@
+@import '_mixins.scss';
 @import '_variables.scss';
 
 .container {
@@ -38,6 +39,32 @@
 
     &:hover {
       fill: red;
+    }
+  }
+
+}
+
+#sign-out-modal {
+  position: fixed;
+  bottom: 32px;
+  left: 140px;
+  z-index: 5;
+  border-radius: 20px;
+  background-color: $semi-dark-blue;
+
+  .modal-content {
+    padding: 20px;
+    p {
+      @include body-medium;
+      color: $white;
+      margin-bottom: 15px;
+    }
+    button {
+      width: 100%;
+      background-color: $red;
+      border-radius: 6px;
+      height: 48px;
+      color: $white;
     }
   }
 

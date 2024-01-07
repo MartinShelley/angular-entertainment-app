@@ -7,8 +7,13 @@ import { AuthService } from 'src/app/authentication/auth.service';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
+  signOutToggle: boolean = false;
 
   constructor(private authService: AuthService) {}
+
+  toggleSignOutModal() {
+    this.signOutToggle = !this.signOutToggle;
+  }
 
   signOut() {
     this.authService.logout();
