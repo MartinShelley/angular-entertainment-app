@@ -65,11 +65,7 @@ export class AuthService implements OnInit {
             'userId': userId!,
             'token': token!
           })
-
-          // this.user.next({
-          //   'userId': 
-          // })
-
+          localStorage.setItem('returningUser', "true");
         }
       })
   }

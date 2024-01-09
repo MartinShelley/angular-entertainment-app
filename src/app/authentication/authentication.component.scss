@@ -52,6 +52,11 @@
         border-radius: 6px;
         height: 48px;
         color: #fff;
+
+        &:hover {
+          background-color: $white;
+          color: #000;
+        }
       }
 
       #loginButton {
@@ -60,6 +65,21 @@
 
       #signupButton {
         margin-top: 24px;
+      }
+
+      #githubButton {
+        margin-top: 10px;
+        background-color: $white;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        &:hover {
+          background-color: $red;
+          color: $white;
+        }
       }
 
       p {

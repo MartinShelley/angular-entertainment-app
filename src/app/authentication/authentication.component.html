@@ -8,7 +8,10 @@
           <input type="email" id="loginEmail" placeholder="Email address" name="email" required ngModel />
           <input type="password" id="loginPassword" placeholder="Password" name="password" required ngModel />
           <button id="loginButton" class="submit-button" type="submit">Login to your account</button>
-          <button id="gitHubButton" class="submit-button" type="submit" (click)="gitHubLogin()">Github</button>
+          <button id="githubButton" class="submit-button" type="submit" (click)="gitHubLogin()">
+            <img src="assets/github-mark.svg" />
+            Sign in with GitHub
+          </button>
         </ng-container>
         <ng-container *ngIf="authMethod === 'Sign Up'">
           <input type="email" id="signupEmail" placeholder="Email address" name="email" required ngModel />
