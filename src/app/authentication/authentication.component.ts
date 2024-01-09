@@ -50,6 +50,10 @@ export class AuthenticationComponent {
     }
   }
 
+  gitHubLogin() {
+    this.authService.gitHubLogin();
+  }
+
   toggleAuthMode() {
     this.authMethod = this.authMethod === 'Sign Up' ? 'Login' : 'Sign Up';
   }
