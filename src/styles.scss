@@ -24,6 +24,16 @@ html {
     width: calc(100% - 132px);
     margin-left: 132px;
   }
+
+  @media screen and (max-width: 1023px) {
+    flex-direction: column;
+    margin: 24px;
+
+    #app-view {
+      margin: unset;
+      width: calc(100% - 48px);
+    }
+  }
 }
 
 .grid-layout {
@@ -31,4 +41,10 @@ html {
   grid-template-columns: repeat(4, 1fr);
   row-gap: 32px;
   column-gap: 40px;
+
+  @media screen and (max-width: 1023px) and (min-width: 768px) {
+    grid-template-columns: repeat(3, 220px);
+    column-gap: 30px;
+    row-gap: 24px;
+  }
 }

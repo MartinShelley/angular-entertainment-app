@@ -1,6 +1,6 @@
 <div class="thumbnail" [ngClass]="trending ? 'trending-thumbnail' : 'recommended-thumbnail'">
   <div class="overlay"></div>
-  <img *ngIf="trending; else regularThumbnail" src="{{ content.thumbnail.trending.large }}" />
+  <img *ngIf="trending; else regularThumbnail" src="{{ content.thumbnail.trending.small }}" />
   <ng-template #regularThumbnail>
     <img src="{{ content.thumbnail.regular.medium }}" />
   </ng-template>

@@ -4,15 +4,19 @@
     <app-search placeholderText="Search for movies or TV series"></app-search>
     <ng-container *ngIf="!searchTerm">
       <h2 class="heading">Trending</h2>
-      <div class="swiper">
-        <div class="trending swiper-container">
-          <div class="swiper-wrapper">
-            <app-thumbnail class="swiper-slide" *ngFor="let item of trending" [content]="item"
-              [trending]="item.isTrending"></app-thumbnail>
-          </div>
+      <!-- <div class="swiper"> -->
+
+        <swiper-container width="470" space-between="40">
+          <swiper-slide *ngFor="let item of trending">
+            <app-thumbnail class="swiper-slide" [content]="item" [trending]="item.isTrending"></app-thumbnail>
+          </swiper-slide>
+        </swiper-container>
+        <!-- <div class="trending swiper-container"> -->
+          <!-- <div class="swiper-wrapper"> -->
+          <!-- </div> -->
           <!-- <div class="swiper-scrollbar"></div> -->
-        </div>
-      </div>
+        <!-- </div> -->
+      <!-- </div> -->
       <app-grid-section title="Recommended for you" [array]="recommended"></app-grid-section>
     </ng-container>
     <ng-container *ngIf="searchTerm && filteredArray.length > 0">
