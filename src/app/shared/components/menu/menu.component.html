@@ -1,8 +1,6 @@
 <div id="menu-bar" class="container">
   <div class="container top-container">
-    <div>
-      <img src="assets/logo.svg" />
-    </div>
+    <img src="assets/logo.svg" />
     <div class="container icon-container">
       <span role="button" class="menu-item" routerLink="/home" routerLinkActive="selected">
         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="#5A698F">
@@ -41,6 +39,7 @@
   </div>
 </div>
 <div id="sign-out-modal" *ngIf="signOutToggle">
+  <div id="sign-out-background" (click)="toggleSignOutModal()"></div>
   <div class="modal-content">
     <p>Are you sure you want to sign out?</p>
     <button (click)="signOut()">Sign Out</button>
