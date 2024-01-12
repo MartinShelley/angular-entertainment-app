@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { Swiper } from 'swiper';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
 
@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
   filteredArray: Media[] = [];
   searchTerm: string;
   images: GalleryItem[];
+  isMobile: boolean;
 
   constructor(private mediaService: MediaService) {}
   
@@ -39,6 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
       this.searchTerm = term;
       this.searchResults();
     });
+
+    this.isMobile = window.innerWidth < 768 ? true : false;
   }
 
   ngAfterViewInit(): void {
@@ -49,6 +52,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.filteredArray = this.allMedia.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.isMobile = window.innerWidth < 768 ? true : false;
   }
 
   // private initSwiper(): void {

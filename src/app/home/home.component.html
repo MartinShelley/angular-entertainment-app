@@ -5,8 +5,13 @@
     <ng-container *ngIf="!searchTerm">
       <h2 class="heading">Trending</h2>
       <!-- <div class="swiper"> -->
-
-        <swiper-container width="470" space-between="40">
+        <p>{{ isMobile }}</p>
+        <swiper-container width="470" space-between="40" *ngIf="!isMobile">
+          <swiper-slide *ngFor="let item of trending">
+            <app-thumbnail class="swiper-slide" [content]="item" [trending]="item.isTrending"></app-thumbnail>
+          </swiper-slide>
+        </swiper-container>
+        <swiper-container width="240" space-between="16" *ngIf="isMobile">
           <swiper-slide *ngFor="let item of trending">
             <app-thumbnail class="swiper-slide" [content]="item" [trending]="item.isTrending"></app-thumbnail>
           </swiper-slide>
