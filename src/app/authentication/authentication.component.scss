@@ -99,5 +99,14 @@
         }
       }
     }
+
+    @media screen and (max-width: 767px) {
+      gap: 58px; 
+      width: 100%;
+
+      .form-wrapper {
+        width: calc(100% - 48px);
+      }
+    }
   }
 }

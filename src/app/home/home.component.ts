@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { Swiper } from 'swiper';
 import { GalleryItem } from '@daelmaak/ngx-gallery';
+import { Subscription } from 'rxjs';
 
 import { Media } from '../media.model';
 import { MediaService } from '../media.service';
+import { DeviceDetectionService } from '../shared/services/device-detection.service';
 
 @Component({
   selector: 'app-home',
@@ -19,9 +21,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
   filteredArray: Media[] = [];
   searchTerm: string;
   images: GalleryItem[];
-  isMobile: boolean;
+  isMobile: Subscription;
 
-  constructor(private mediaService: MediaService) {}
+  constructor(private mediaService: MediaService, private deviceDetectionService: DeviceDetectionService) {}
   
   ngOnInit(): void {
     this.mediaService.fetchHomePageMedia(true).subscribe((media) => {
@@ -41,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
       this.searchResults();
     });
 
-    this.isMobile = window.innerWidth < 768 ? true : false;
+    this.isMobile = this.deviceDetectionService.isMobile.subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -52,11 +54,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.filteredArray = this.allMedia.filter((media) => {
       return media.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onWindowResize() {
-    this.isMobile = window.innerWidth < 768 ? true : false;
   }
 
   // private initSwiper(): void {

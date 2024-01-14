@@ -22,7 +22,8 @@ html {
     // display: flex;
     // flex-direction: column;
     width: calc(100% - 132px);
-    margin-left: 132px;
+    margin: 32px 0 0 132px;
+    // margin-left: 132px;
   }
 
   @media screen and (max-width: 1023px) {
@@ -30,8 +31,15 @@ html {
     margin: 24px;
 
     #app-view {
-      margin: unset;
+      margin: 32px 0 0;
       width: unset;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    margin: 0;
+    #app-view {
+      margin: 24px 16px 36px;
     }
   }
 }

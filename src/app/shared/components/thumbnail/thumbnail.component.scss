@@ -32,6 +32,12 @@
       opacity: 1 !important;
     }
 
+
+    @media screen and (max-width: 767px) {
+      top: 8px !important;
+      right: 8px !important;
+    }
+
   }
 
   .thumbnail-content {
@@ -71,6 +77,10 @@
 .trending-thumbnail {
   .bookmark {
     right: 24px;
+
+    @media screen and (max-width: 767px) {
+      
+    }
   }
 
   .thumbnail-content {
@@ -80,6 +90,11 @@
 
     h3 {
       @include heading-small;
+    }
+
+    @media screen and (max-width: 767px) {
+      bottom: 16px;
+      left: 16px;
     }
   }
 

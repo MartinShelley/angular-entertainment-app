@@ -3,6 +3,10 @@
 .heading {
   @include heading-large;
   margin: 35px 0 25px;
+
+  @media screen and (max-width: 767px) {
+    margin: 24px 0 16px;
+  }
 }
 
 .trending {
