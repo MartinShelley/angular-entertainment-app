@@ -1,6 +1,5 @@
-- Why is there such a delay when signing in via Github? Can I stop it from hitting auth page again? Or add a loading spinner?
-- Login/Sign up Errors
+- Fix Authentication Process (why is it so slow?)
+- Loading Spinner?
 
-- Mobile/Tablet views
-- Sort out all hover states
+- Login/Sign up Errors
 - Sort Readme

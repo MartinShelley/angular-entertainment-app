@@ -21,11 +21,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
   filteredArray: Media[] = [];
   searchTerm: string;
   images: GalleryItem[];
-  isMobile: Subscription;
+  isMobile: boolean;
 
   constructor(private mediaService: MediaService, private deviceDetectionService: DeviceDetectionService) {}
   
   ngOnInit(): void {
+    this.deviceDetectionService.isMobile.subscribe((result) => {
+      this.isMobile = result;
+    });
+
     this.mediaService.fetchHomePageMedia(true).subscribe((media) => {
       this.trending = media;
     });
@@ -34,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
       this.recommended = media;
     });
     
-    this.mediaService.fetchAllMedia().subscribe((media) => {
+    this.mediaService.mediaDataSubject.subscribe((media) => {
       this.allMedia = media;
     });
     
@@ -43,9 +47,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
       this.searchResults();
     });
 
-    this.isMobile = this.deviceDetectionService.isMobile.subscribe();
   }
-
+  
   ngAfterViewInit(): void {
     // this.initSwiper();
   }

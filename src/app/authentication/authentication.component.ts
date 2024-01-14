@@ -42,8 +42,7 @@ export class AuthenticationComponent {
     }
 
     if(this.authObservable) {
-      this.authObservable.subscribe(
-        resData => {
+      this.authObservable.subscribe(() => {
           this.router.navigate(['/home']);
         }
       );

@@ -9,13 +9,15 @@ import { DeviceDetectionService } from '../../services/device-detection.service'
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-  isMobile: Subscription;
+  isMobile: boolean;
   signOutToggle: boolean = false;
 
   constructor(private authService: AuthService, private deviceDetectionService: DeviceDetectionService) {}
 
   ngOnInit(): void {
-    this.isMobile = this.deviceDetectionService.isMobile.subscribe();
+    this.deviceDetectionService.isMobile.subscribe((result) => {
+      this.isMobile = result;
+    });
   }
 
   toggleSignOutModal() {
