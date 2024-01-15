@@ -3,21 +3,48 @@
     <img src="assets/logo.svg" />
     <div class="form-wrapper">
       <h1>{{ authMethod }}</h1>
-      <form #authForm="ngForm" (submit)="onSubmit(authForm)">
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
         <ng-container *ngIf="authMethod === 'Login'">
-          <input type="email" id="loginEmail" placeholder="Email address" name="email" required ngModel />
-          <input type="password" id="loginPassword" placeholder="Password" name="password" required ngModel />
+          <div class="input-group">
+            <input type="email" id="loginEmail" placeholder="Email address" formControlName="email" required />
+            <span class="error-message"
+              *ngIf="(authForm.controls['email']?.dirty || authForm.controls['email']?.touched) && !authForm.controls.email.value">Can't
+              be empty</span>
+          </div>
+          <div class="input-group">
+            <input type="password" id="loginPassword" placeholder="Password" formControlName="password" required />
+            <span class="error-message"
+              *ngIf="(authForm.controls['password']?.dirty || authForm.controls['password']?.touched) && !authForm.controls.password.value">Can't
+              be empty</span>
+          </div>
+          <p class="error-message firebase-error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
           <button id="loginButton" class="submit-button" type="submit">Login to your account</button>
-          <button id="githubButton" class="submit-button" type="submit" (click)="gitHubLogin()">
+          <button id="githubButton" class="submit-button" type="button" (click)="gitHubLogin()">
             <img src="assets/github-mark.svg" />
             Sign in with GitHub
           </button>
         </ng-container>
         <ng-container *ngIf="authMethod === 'Sign Up'">
-          <input type="email" id="signupEmail" placeholder="Email address" name="email" required ngModel />
-          <input type="password" id="signupPassword" placeholder="Password" name="password" required ngModel />
-          <input type="password" id="repeatPassword" placeholder="Repeat password" name="repeatPassword" required
-            ngModel />
+          <div class="input-group">
+            <input type="email" id="signupEmail" placeholder="Email address" formControlName="email" required />
+            <span class="error-message"
+              *ngIf="(authForm.controls['email']?.dirty || authForm.controls['email']?.touched) && !authForm.controls.email.value">Can't
+              be empty</span>
+          </div>
+          <div class="input-group">
+            <input type="password" id="signupPassword" placeholder="Password" formControlName="password" required />
+            <span class="error-message"
+              *ngIf="(authForm.controls['password']?.dirty || authForm.controls['password']?.touched) && !authForm.controls.password.value">Can't
+              be empty</span>
+          </div>
+          <div class="input-group">
+            <input type="password" id="repeatPassword" placeholder="Repeat password" formControlName="repeatPassword"
+              required />
+            <span class="error-message"
+              *ngIf="(authForm.controls['repeatPassword']?.dirty || authForm.controls['repeatPassword']?.touched) && !authForm.controls.repeatPassword.value">Can't
+              be empty</span>
+          </div>
+          <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
           <button id="signupButton" class="submit-button" type="submit">Create an account</button>
         </ng-container>
       </form>

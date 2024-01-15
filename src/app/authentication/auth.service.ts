@@ -13,25 +13,29 @@ export class AuthService implements OnInit {
   auth = getAuth();
   authState = new BehaviorSubject<boolean | null>(null);
   gitHubProvider = new GithubAuthProvider();
+  errorMessage = new BehaviorSubject<string | null>(null);
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    console.log("current user: ", this.auth.currentUser)
   }
 
   login(email: string, password: string) {
+    console.log("email from auth Service: ", email);
+    console.log("password from auth Service: ", password);
     return from(signInWithEmailAndPassword(this.auth, email, password))
     .pipe(
-      catchError(error => throwError(() => error)),
+      catchError(error => throwError(() => {
+        return this.handleErrors(error.code);
+      })),
       tap(response => {
+        localStorage.setItem('returningUser', "true");
         response.user.getIdToken(false).then((token) => {
           this.user.next({
             'userId': response.user.uid,
             'token': token
           })
         })
-        localStorage.setItem('returningUser', "true");
       })
     )
   }
@@ -39,7 +43,9 @@ export class AuthService implements OnInit {
   signUp(email: string, password: string) {
     return from(createUserWithEmailAndPassword(this.auth, email, password))
     .pipe(
-      catchError(error => throwError(() => error)),
+      catchError(error => throwError(() => {
+        return this.handleErrors(error.code);
+      })),
       tap(response => {
         response.user.getIdToken(false).then((token) => {
           this.user.next({
@@ -59,7 +65,6 @@ export class AuthService implements OnInit {
           const credential = GithubAuthProvider.credentialFromResult(result);
           const token = credential!.accessToken;
           const userId = credential!.idToken
-          console.log("result: ", result);
 
           this.user.next({
             'userId': userId!,
@@ -68,6 +73,29 @@ export class AuthService implements OnInit {
           localStorage.setItem('returningUser', "true");
         }
       })
+  }
+
+  handleErrors(errorCode: string) {
+    let errorMessage;
+    switch(errorCode) {
+      case 'auth/invalid-login-credentials':
+      case 'auth/invalid-email':
+        errorMessage = 'Invalid login credentials';
+        break;
+      case 'auth/too-many-requests':
+        errorMessage = 'You have tried submitting too many requests. Please try again later';
+        break;
+      case 'auth/email-already-exists':
+        errorMessage = 'The email used already exists';
+        break;
+      case 'auth/internal-error':
+        errorMessage = 'An unknown error occurred';
+        break;
+      case 'auth/weak-password':
+        errorMessage = 'Password is not strong enough, please use a stronger password';
+        break;
+    }
+    return errorMessage;
   }
 
   logout() {

@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
 import { GalleryComponent } from '@daelmaak/ngx-gallery';
 
@@ -40,7 +40,8 @@ register();
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    GalleryComponent
+    GalleryComponent,
+    ReactiveFormsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -30,16 +30,36 @@
         margin-bottom: 40px;
       }
 
-      input {
-        background-color: transparent;
-        border: 1px $greyish-blue;
-        border-style: none none solid none;
-        font-size: 15px;
-        font-weight: 300;
-        width: 100%;
-        color: #fff;
-        padding: 0 0 17px 16px;
-      } 
+      .input-group {
+        display: flex;
+        position: relative;
+        align-items: center;
+        
+        input {
+          background-color: transparent;
+          border: 1px $greyish-blue;
+          border-style: none none solid none;
+          font-size: 15px;
+          font-weight: 300;
+          width: 100%;
+          color: #fff;
+          padding: 0 0 17px 16px;
+        } 
+
+        .error-message {
+          position: absolute;
+          right: 0;
+        }
+      }
+
+      .error-message {
+        color: $red;
+      }
+
+      .firebase-error-message {
+        margin-top: 10px;
+        justify-content: flex-start;
+      }
 
       #loginPassword,#signupPassword, #repeatPassword {
         margin-top: 24px;
@@ -60,7 +80,7 @@
       }
 
       #loginButton {
-        margin-top: 40px;
+        margin-top: 35px;
       }
 
       #signupButton {

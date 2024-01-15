@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -14,25 +14,36 @@ type AuthMode = 'Sign Up' | 'Login';
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss']
 })
-export class AuthenticationComponent {
+export class AuthenticationComponent implements OnInit {
+  authForm: FormGroup;
   authMethod: AuthMode = 'Login';
   authObservable: Observable<Record<string, any>>;
   buttonText: string;
+  errorMessage: string | null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {}
 
-  onSubmit(form: NgForm) {
-    if(form.invalid) {
+  ngOnInit(): void {
+    this.authForm = new FormGroup({
+      email: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      repeatPassword: new FormControl('')
+    })
+  }
+
+  onSubmit() {
+    this.errorMessage = null;
+    if(this.authForm.invalid) {
       return;
     }
 
-    const email = form.value.email;
-    const password = form.value.password;
-    const repeatPassword = form.value.repeatPassword;
+    const email = this.authForm.value.email;
+    const password = this.authForm.value.password;
+    const repeatPassword = this.authForm.value.repeatPassword;
 
     if(this.authMethod === 'Sign Up') {
       if(password !== repeatPassword) {
-        //..some sort of error
+        this.errorMessage = "The password you have entered doesn't match, please try again"
         return;
       }
       this.authObservable = this.authService.signUp(email, password);
@@ -41,12 +52,19 @@ export class AuthenticationComponent {
       this.authObservable = this.authService.login(email, password);
     }
 
-    if(this.authObservable) {
-      this.authObservable.subscribe(() => {
+    this.authObservable.subscribe(
+      {
+        // next: () => {
+
+        // },
+        error: (err: string) => {
+          this.errorMessage = err;
+        },
+        complete: () => {
           this.router.navigate(['/home']);
         }
-      );
-    }
+      }
+    );
   }
 
   gitHubLogin() {
@@ -54,6 +72,8 @@ export class AuthenticationComponent {
   }
 
   toggleAuthMode() {
+    this.errorMessage = null;
+    this.authForm.reset();
     this.authMethod = this.authMethod === 'Sign Up' ? 'Login' : 'Sign Up';
   }
 
