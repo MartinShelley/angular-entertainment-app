@@ -20,6 +20,7 @@ export class AuthenticationComponent implements OnInit {
   authObservable: Observable<Record<string, any>>;
   buttonText: string;
   errorMessage: string | null;
+  isLoading: boolean;
 
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {}
 
@@ -33,6 +34,7 @@ export class AuthenticationComponent implements OnInit {
 
   onSubmit() {
     this.errorMessage = null;
+    this.isLoading = true;
     if(this.authForm.invalid) {
       return;
     }
@@ -61,6 +63,7 @@ export class AuthenticationComponent implements OnInit {
           this.errorMessage = err;
         },
         complete: () => {
+          this.isLoading = false;
           this.router.navigate(['/home']);
         }
       }

@@ -3,7 +3,8 @@
     <img src="assets/logo.svg" />
     <div class="form-wrapper">
       <h1>{{ authMethod }}</h1>
-      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
         <ng-container *ngIf="authMethod === 'Login'">
           <div class="input-group">
             <input type="email" id="loginEmail" placeholder="Email address" formControlName="email" required />
