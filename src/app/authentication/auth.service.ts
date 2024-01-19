@@ -80,19 +80,19 @@ export class AuthService implements OnInit {
     switch(errorCode) {
       case 'auth/invalid-login-credentials':
       case 'auth/invalid-email':
-        errorMessage = 'Invalid login credentials';
+        errorMessage = 'Invalid login credentials.';
         break;
       case 'auth/too-many-requests':
-        errorMessage = 'You have tried submitting too many requests. Please try again later';
+        errorMessage = 'You have tried submitting too many requests. Please try again later.';
         break;
       case 'auth/email-already-exists':
-        errorMessage = 'The email used already exists';
+        errorMessage = 'The email used already exists.';
         break;
       case 'auth/internal-error':
-        errorMessage = 'An unknown error occurred';
+        errorMessage = 'An unknown error occurred.';
         break;
       case 'auth/weak-password':
-        errorMessage = 'Password is not strong enough, please use a stronger password';
+        errorMessage = 'Password is not strong enough, please use a stronger password.';
         break;
     }
     return errorMessage;

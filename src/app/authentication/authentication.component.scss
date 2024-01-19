@@ -59,6 +59,7 @@
       .firebase-error-message {
         margin-top: 10px;
         justify-content: flex-start;
+        text-align: left;
       }
 
       #loginPassword,#signupPassword, #repeatPassword {
@@ -66,7 +67,6 @@
       }
 
       .submit-button {
-        // margin-top: 40px;
         width: 100%;
         background-color: $red;
         border-radius: 6px;

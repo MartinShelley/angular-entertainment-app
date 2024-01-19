@@ -18,6 +18,7 @@ import { GridSectionComponent } from './shared/components/grid-section/grid-sect
 import { AuthInterceptorService } from './authentication/auth-interceptor.service';
 import { MediaCategoryComponent } from './media-category/media-category.component';
 import { MediaCategoryLabelPipe } from './shared/pipes/media-category-label.pipe';
+import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 
 //init swiper.js
 register();
@@ -32,6 +33,7 @@ register();
     SearchComponent,
     BookmarksComponent,
     GridSectionComponent,
+    LoadingSpinnerComponent,
     MediaCategoryComponent,
     MediaCategoryLabelPipe
   ],
