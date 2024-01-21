@@ -60,6 +60,7 @@ export class AuthenticationComponent implements OnInit {
 
         // },
         error: (err: string) => {
+          this.isLoading = false;
           this.errorMessage = err;
         },
         complete: () => {
@@ -71,7 +72,21 @@ export class AuthenticationComponent implements OnInit {
   }
 
   gitHubLogin() {
-    this.authService.gitHubLogin();
+    this.isLoading = true;
+    this.authService.gitHubLogin()
+    // .then((userData) => {
+    //   if (userData) {
+    //     // Do something with the user data
+    //     // console.log('GitHub login successful:', userData);
+    //   }
+    // })
+    // .catch(error => {
+    //   // Handle errors appropriately
+    //   // console.error('Authentication error:', error);
+    // })
+    .finally(() => {
+      this.isLoading = false;
+    });
   }
 
   toggleAuthMode() {

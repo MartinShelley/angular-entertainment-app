@@ -58,21 +58,35 @@ export class AuthService implements OnInit {
     )
   }
 
-  gitHubLogin() {
-    signInWithRedirect(this.auth, this.gitHubProvider)
-      .then((result) => {
-        if(result) {
-          const credential = GithubAuthProvider.credentialFromResult(result);
-          const token = credential!.accessToken;
-          const userId = credential!.idToken
+  async gitHubLogin() {
+    try {
+      const result = await signInWithPopup(this.auth, this.gitHubProvider)
+      if(result) {
+        console.log(result);
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        console.log(credential);
+        const userId = result.user.uid;
+        const token = credential!.accessToken;
 
-          this.user.next({
-            'userId': userId!,
-            'token': token!
-          })
-          localStorage.setItem('returningUser', "true");
+        this.user.next({
+          'userId': userId!,
+          'token': token!
+        });
+
+        console.log("setting local storage!!");
+        localStorage.setItem('returningUser', "true");
+
+        return {
+          'userId': userId!,
+          'token': token!
         }
-      })
+      }
+    }
+    catch (error){
+      console.error(error)
+    }
+
+    return null;
   }
 
   handleErrors(errorCode: string) {

@@ -24,6 +24,7 @@
             <img src="assets/github-mark.svg" />
             Sign in with GitHub
           </button>
+          <p>Don't have an account? <span (click)="toggleAuthMode()">Sign Up</span></p>
         </ng-container>
         <ng-container *ngIf="authMethod === 'Sign Up'">
           <div class="input-group">
@@ -47,10 +48,9 @@
           </div>
           <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
           <button id="signupButton" class="submit-button" type="submit">Create an account</button>
+          <p>Already have an account? <span (click)="toggleAuthMode()">Login</span></p>
         </ng-container>
       </form>
-      <p *ngIf="authMethod === 'Sign Up'">Already have an account? <span (click)="toggleAuthMode()">Login</span></p>
-      <p *ngIf="authMethod === 'Login'">Don't have an account? <span (click)="toggleAuthMode()">Sign Up</span></p>
     </div>
   </div>
 </div>

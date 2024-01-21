@@ -27,6 +27,7 @@ export class AppComponent implements OnInit{
       this.authService.authState.next(false);
       this.router.navigate(['/auth']);
       this.auth.onAuthStateChanged(user => {
+        console.log("onAuthStateChanged app component");
         if(user) {
           this.assignUser();
         }
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit{
   }
   
   assignUser() {
+    console.log("assign user app component");
     this.auth.currentUser!.getIdToken().then((token) => {
       this.authService.user.next({
         'userId': this.auth.currentUser!.uid,
