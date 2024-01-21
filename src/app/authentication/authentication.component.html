@@ -48,7 +48,7 @@
               *ngIf="(authForm.controls['repeatPassword']?.dirty || authForm.controls['repeatPassword']?.touched) && !authForm.controls.repeatPassword.value">Can't
               be empty</span>
           </div>
-          <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
+          <p class="error-message firebase-error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
           <button id="signupButton" class="submit-button" type="submit">Create an account</button>
           <p>Already have an account? <span (click)="toggleAuthMode()">Login</span></p>
         </ng-container>

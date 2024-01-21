@@ -23,11 +23,11 @@ export class AuthService {
       catchError(error => throwError(() => {
         return this.handleErrors(error.code);
       })),
-      tap(response => {
-        response.user.getIdToken().then((token) => {
-          this.setUser(response.user.uid, token);
-        })
-      })
+      // tap(response => {
+      //   response.user.getIdToken().then((token) => {
+      //     this.setUser(response.user.uid, token);
+      //   })
+      // })
     )
   }
 
@@ -37,24 +37,26 @@ export class AuthService {
       catchError(error => throwError(() => {
         return this.handleErrors(error.code);
       })),
-      tap(response => {
-        response.user.getIdToken().then((token) => {
-          this.setUser(response.user.uid, token);
-        })
-      })
+      // tap(response => {
+      //   response.user.getIdToken().then((token) => {
+      //     this.setUser(response.user.uid, token);
+      //   })
+      // })
     )
   }
 
   async gitHubLogin() {
     try {
-      const result = await signInWithPopup(this.auth, this.gitHubProvider)
-      if(result) {
-        const credential = GithubAuthProvider.credentialFromResult(result);
-        const userId = result.user.uid;
-        const token = credential!.accessToken;
-
-        this.setUser(userId, token!)
-      }
+      await signInWithPopup(this.auth, this.gitHubProvider)
+      // const result = await signInWithPopup(this.auth, this.gitHubProvider)
+      // if(result) {
+      //   console.log("result gitHubLogin: ", result);
+      //   const credential = GithubAuthProvider.credentialFromResult(result);
+      //   const userId = result.user.uid;
+      //   const token = credential!.accessToken;
+      //   console.log("token gitHub login: ", token);
+      //   this.setUser(userId, token!)
+      // }
     }
     catch (error){
       console.error(error)
@@ -63,8 +65,12 @@ export class AuthService {
   }
 
   handleErrors(errorCode: string) {
+    console.log(errorCode);
     let errorMessage;
     switch(errorCode) {
+      case "auth/email-already-in-use":
+        errorMessage = 'The email you have used is already in use. Please sign up using a different email or attempt to login.';
+        break;
       case 'auth/invalid-login-credentials':
       case 'auth/invalid-email':
         errorMessage = 'Invalid login credentials.';
@@ -85,13 +91,14 @@ export class AuthService {
     return errorMessage;
   }
 
-  setUser(userId: string, token: string) {
-    localStorage.setItem('returningUser', "true");
-    this.user.next({
-      'userId': userId,
-      'token': token
-    })
-  }
+  // setUser(userId: string, token: string) {
+  //   localStorage.setItem('returningUser', "true");
+  //   // this.user.next({
+  //   //   'userId': userId,
+  //   //   'token': token
+  //   // })
+  //   console.log(this.user);
+  // }
 
   logout() {
     this.auth.signOut();

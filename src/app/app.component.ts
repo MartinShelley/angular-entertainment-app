@@ -40,7 +40,9 @@ export class AppComponent implements OnInit{
   
   assignUser() {
     this.authService.authState.next(true);
+    localStorage.setItem('returningUser', "true");
     this.auth.currentUser!.getIdToken().then((token) => {
+      console.log("token app component: ", token);
       this.authService.user.next({
         'userId': this.auth.currentUser!.uid,
         'token': token

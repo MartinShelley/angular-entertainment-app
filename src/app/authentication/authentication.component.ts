@@ -33,17 +33,11 @@ export class AuthenticationComponent implements OnInit {
 
   onSubmit() {
     this.errorMessage = null;
-    this.isLoading = true;
-    this.loginMethod = 'email';
-    
-    if(this.authForm.invalid) {
-      return;
-    }
 
     const email = this.authForm.value.email;
     const password = this.authForm.value.password;
     const repeatPassword = this.authForm.value.repeatPassword;
-
+    
     if(this.authMethod === 'Sign Up') {
       if(password !== repeatPassword) {
         this.errorMessage = "The password you have entered doesn't match, please try again"
@@ -55,9 +49,13 @@ export class AuthenticationComponent implements OnInit {
       this.authObservable = this.authService.login(email, password);
     }
 
+    this.isLoading = true;
+    this.loginMethod = 'email';
+    
     this.authObservable.subscribe(
       {
         error: (err: string) => {
+          console.log(err);
           this.isLoading = false;
           this.errorMessage = err;
         },
@@ -80,8 +78,8 @@ export class AuthenticationComponent implements OnInit {
   }
 
   toggleAuthMode() {
-    this.errorMessage = null;
     this.authForm.reset();
+    this.errorMessage = null;
     this.authMethod = this.authMethod === 'Sign Up' ? 'Login' : 'Sign Up';
   }
 }
