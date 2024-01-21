@@ -1,4 +1,5 @@
 @import '_mixins.scss';
+@import '_variables.scss';
 
 // both thumbnails
 .thumbnail {
@@ -20,7 +21,7 @@
     
     &:hover {
       path {
-        fill: #fff;
+        fill: $white;
       }
     }
 
@@ -41,7 +42,7 @@
   }
 
   .thumbnail-content {
-    color: #fff;
+    color: $white;
 
     .thumbnail-content-top {
       display: flex;
@@ -65,7 +66,7 @@
     width: 117px;
   
     .play-label {
-      color: #fff;
+      color: $white;
     }
   }
 
@@ -77,10 +78,6 @@
 .trending-thumbnail {
   .bookmark {
     right: 24px;
-
-    @media screen and (max-width: 767px) {
-      
-    }
   }
 
   .thumbnail-content {
@@ -126,11 +123,3 @@
     transform: translate(-50%, 0);
   }
 }
-
-// &:hover > img + .overlay {
-//   width: 100%;
-//   height: 100%;
-//   position: absolute;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   border-radius: 8px;
-// }

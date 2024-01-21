@@ -1,12 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Media } from 'src/app/media.model';
-import { MediaService } from 'src/app/media.service';
+import { Media } from 'src/app/shared/models/media.model';
+import { MediaService } from 'src/app/shared/services/media.service';
 
 @Component({
   selector: 'app-thumbnail',
   templateUrl: './thumbnail.component.html',
   styleUrls: ['./thumbnail.component.scss']
 })
+
 export class ThumbnailComponent implements OnInit {
   @Input() content: Media;
   @Input() trending?: boolean;

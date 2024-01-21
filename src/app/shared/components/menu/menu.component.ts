@@ -1,23 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, HostListener } from '@angular/core';
 import { AuthService } from 'src/app/authentication/auth.service';
-import { DeviceDetectionService } from '../../services/device-detection.service';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
   isMobile: boolean;
   signOutToggle: boolean = false;
 
-  constructor(private authService: AuthService, private deviceDetectionService: DeviceDetectionService) {}
+  constructor(private authService: AuthService) {
+    this.getIsMobile();
+  }
 
-  ngOnInit(): void {
-    this.deviceDetectionService.isMobile.subscribe((result) => {
-      this.isMobile = result;
-    });
+  getIsMobile() {
+    this.isMobile = window.innerWidth < 768;
   }
 
   toggleSignOutModal() {
@@ -26,5 +24,10 @@ export class MenuComponent implements OnInit {
 
   signOut() {
     this.authService.logout();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getIsMobile();
   }
 }

@@ -1,11 +1,11 @@
+@import '_variables.scss';
+@import '_mixins.scss';
+
 .lds-ring {
-  display: inline-block;
-  position: relative;
-  width: 80px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
   height: 80px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   div {
     box-sizing: border-box;
     display: block;
@@ -29,6 +29,16 @@
     }
   }
 }
+
+.login-message {
+  color: $white;
+  display: flex;
+  justify-content: center;
+  @include body-medium;
+  text-align: center;
+  margin-top: 24px;
+}
+
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);

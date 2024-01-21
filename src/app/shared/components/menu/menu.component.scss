@@ -15,9 +15,7 @@
 #menu-bar {
   background-color: $semi-dark-blue;
   max-width: 96px;
-  // height: calc(100vh - 64px);
   padding: 35px 0 32px;
-  // margin-right: 36px;
   border-radius: 20px;
   justify-content: space-between;
   position: fixed;
@@ -49,7 +47,7 @@
     justify-content: space-between;
 
     .selected > svg {
-      fill: #fff;
+      fill: $white;
     }
 
     @media screen and (max-width: 1023px) {
@@ -74,7 +72,7 @@
     cursor: pointer;
 
     &:hover {
-      fill: red;
+      fill: $red;
     }
   }
 
@@ -140,5 +138,4 @@
       right: 0;
     }
   }
-
 }

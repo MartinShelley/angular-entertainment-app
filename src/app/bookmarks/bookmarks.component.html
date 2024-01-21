@@ -3,10 +3,10 @@
   <div id="app-view">
     <app-search placeholderText="Search for bookmarked shows"></app-search>
     <ng-container *ngIf="!searchTerm">
-      <app-grid-section title="Bookmarked Movies" [array]="bookmarkedMovies"></app-grid-section>
-      <h3 *ngIf="bookmarkedMovies.length === 0">No Bookmarked Movies</h3>
-      <app-grid-section title="Bookmarked TV Series" [array]="bookmarkedTVSeries"></app-grid-section>
-      <h3 *ngIf="bookmarkedTVSeries.length === 0">No Bookmarked TV Series</h3>
+      <app-grid-section title="Bookmarked Movies" [array]="bookmarkedMovies" [isLoading]="isContentLoading"></app-grid-section>
+      <h3 *ngIf="bookmarkedMovies.length === 0 && !isContentLoading">No Bookmarked Movies</h3>
+      <app-grid-section title="Bookmarked TV Series" [array]="bookmarkedTVSeries" [isLoading]="isContentLoading"></app-grid-section>
+      <h3 *ngIf="bookmarkedTVSeries.length === 0 && !isContentLoading">No Bookmarked TV Series</h3>
     </ng-container>
     <ng-container *ngIf="searchTerm && filteredMovies.length > 0">
       <app-grid-section title="Bookmarked Movies" [array]="filteredMovies"></app-grid-section>

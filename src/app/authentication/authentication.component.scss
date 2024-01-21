@@ -42,9 +42,13 @@
           font-size: 15px;
           font-weight: 300;
           width: 100%;
-          color: #fff;
+          color: $white;
           padding: 0 0 17px 16px;
         } 
+
+        .input-error {
+          border-color: $red !important;
+        }
 
         .error-message {
           position: absolute;
@@ -71,7 +75,7 @@
         background-color: $red;
         border-radius: 6px;
         height: 48px;
-        color: #fff;
+        color: $white;
 
         &:hover {
           background-color: $white;
@@ -114,7 +118,7 @@
           color: $red;
           cursor: pointer;
           &:hover {
-            color: #fff;
+            color: $white;
           }
         }
       }

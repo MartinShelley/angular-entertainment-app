@@ -3,8 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
-import { Media } from '../media.model';
-import { MediaService } from '../media.service';
+import { Media } from '../shared/models/media.model';
+import { MediaService } from '../shared/services/media.service';
 import { SearchComponent } from '../shared/components/search/search.component';
 
 @Component({
@@ -12,6 +12,7 @@ import { SearchComponent } from '../shared/components/search/search.component';
   templateUrl: './media-category.component.html',
   styleUrls: ['./media-category.component.scss']
 })
+
 export class MediaCategoryComponent implements OnInit, OnDestroy{
   @ViewChild(SearchComponent) searchComponent !: SearchComponent;
   urlSubscription: Subscription;
@@ -19,8 +20,10 @@ export class MediaCategoryComponent implements OnInit, OnDestroy{
   categoryMedia: Media[] = [];
   filteredArray: Media[] = [];
   searchTerm: string;
+  isContentLoading: boolean;
   
   constructor(private mediaService: MediaService, private router: Router){
+    this.isContentLoading = true;
     this.urlSubscription = this.router.events
     .pipe(filter((event: any) => event instanceof NavigationEnd))
     .subscribe((val) => {
@@ -32,6 +35,9 @@ export class MediaCategoryComponent implements OnInit, OnDestroy{
       }
      
       this.mediaService.getMediaByType(this.category).subscribe((media) => {
+        if(media.length > 0) {
+          this.isContentLoading = false;
+        }
         this.categoryMedia = media;
       });
     });

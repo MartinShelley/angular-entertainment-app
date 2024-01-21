@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from './authentication/auth.service';
-import { Subscription } from 'rxjs';
 import { getAuth } from 'firebase/auth';
 
 @Component({
@@ -11,8 +10,8 @@ import { getAuth } from 'firebase/auth';
 })
 export class AppComponent implements OnInit{
   auth = getAuth();
-  authStatusSubscription: Subscription | null = null;
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     if(localStorage.getItem('returningUser')) {
@@ -25,28 +24,27 @@ export class AppComponent implements OnInit{
     }
     else {
       this.authService.authState.next(false);
+      this.authService.user.next(null);
       this.router.navigate(['/auth']);
-      this.auth.onAuthStateChanged(user => {
-        console.log("onAuthStateChanged app component");
-        if(user) {
-          this.assignUser();
-        }
-        else {
-          this.authService.authState.next(false);
-          this.router.navigate(['/auth']);
-        }
-      })
     }
+    this.auth.onAuthStateChanged(user => {
+      if(user) {
+        this.assignUser();
+      }
+      else {
+        this.authService.authState.next(false);
+        this.router.navigate(['/auth']);
+      }
+    })
   }
   
   assignUser() {
-    console.log("assign user app component");
+    this.authService.authState.next(true);
     this.auth.currentUser!.getIdToken().then((token) => {
       this.authService.user.next({
         'userId': this.auth.currentUser!.uid,
         'token': token
       })
-      this.authService.authState.next(true);
       this.router.navigate(['/home']);
     })  
   }

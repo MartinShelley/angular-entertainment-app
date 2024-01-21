@@ -1,4 +1,5 @@
 <h2 *ngIf="title">{{ title }}</h2>
-<div class="grid-layout">
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<div class="grid-layout" *ngIf="!isLoading">
   <app-thumbnail *ngFor="let item of array" [content]="item"></app-thumbnail>
 </div>

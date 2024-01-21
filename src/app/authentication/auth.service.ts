@@ -1,14 +1,14 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { getAuth, GithubAuthProvider, signInWithPopup, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithRedirect, getRedirectResult } from "firebase/auth";
-import { BehaviorSubject, catchError, throwError, from, Subject } from "rxjs";
+import { getAuth, GithubAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { BehaviorSubject, catchError, throwError, from } from "rxjs";
 import { tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class AuthService implements OnInit {
+export class AuthService {
   user = new BehaviorSubject<Record<string, string> | null>(null);
   auth = getAuth();
   authState = new BehaviorSubject<boolean | null>(null);
@@ -17,24 +17,15 @@ export class AuthService implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-  }
-
   login(email: string, password: string) {
-    console.log("email from auth Service: ", email);
-    console.log("password from auth Service: ", password);
     return from(signInWithEmailAndPassword(this.auth, email, password))
     .pipe(
       catchError(error => throwError(() => {
         return this.handleErrors(error.code);
       })),
       tap(response => {
-        localStorage.setItem('returningUser', "true");
-        response.user.getIdToken(false).then((token) => {
-          this.user.next({
-            'userId': response.user.uid,
-            'token': token
-          })
+        response.user.getIdToken().then((token) => {
+          this.setUser(response.user.uid, token);
         })
       })
     )
@@ -47,13 +38,9 @@ export class AuthService implements OnInit {
         return this.handleErrors(error.code);
       })),
       tap(response => {
-        response.user.getIdToken(false).then((token) => {
-          this.user.next({
-            'userId': response.user.uid,
-            'token': token
-          })
+        response.user.getIdToken().then((token) => {
+          this.setUser(response.user.uid, token);
         })
-        localStorage.setItem('returningUser', "true");
       })
     )
   }
@@ -62,30 +49,16 @@ export class AuthService implements OnInit {
     try {
       const result = await signInWithPopup(this.auth, this.gitHubProvider)
       if(result) {
-        console.log(result);
         const credential = GithubAuthProvider.credentialFromResult(result);
-        console.log(credential);
         const userId = result.user.uid;
         const token = credential!.accessToken;
 
-        this.user.next({
-          'userId': userId!,
-          'token': token!
-        });
-
-        console.log("setting local storage!!");
-        localStorage.setItem('returningUser', "true");
-
-        return {
-          'userId': userId!,
-          'token': token!
-        }
+        this.setUser(userId, token!)
       }
     }
     catch (error){
       console.error(error)
     }
-
     return null;
   }
 
@@ -112,8 +85,17 @@ export class AuthService implements OnInit {
     return errorMessage;
   }
 
+  setUser(userId: string, token: string) {
+    localStorage.setItem('returningUser', "true");
+    this.user.next({
+      'userId': userId,
+      'token': token
+    })
+  }
+
   logout() {
     this.auth.signOut();
+    this.user.next(null);
     localStorage.removeItem('returningUser');
   }
 }

@@ -1,6 +1,4 @@
-- Fix Authentication Process (why is it so slow?)
-- Fix signing out on auto login
-- Loading Spinner?
+- Refactor code/remove anything not used
+- Folder Structure correct?
 
-- Login/Sign up Errors
 - Sort Readme

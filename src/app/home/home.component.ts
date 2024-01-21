@@ -1,11 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, HostListener } from '@angular/core';
-import { Swiper } from 'swiper';
-import { GalleryItem } from '@daelmaak/ngx-gallery';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 
-import { Media } from '../media.model';
-import { MediaService } from '../media.service';
-import { DeviceDetectionService } from '../shared/services/device-detection.service';
+import { Media } from '../shared/models/media.model';
+import { MediaService } from '../shared/services/media.service';
 
 @Component({
   selector: 'app-home',
@@ -13,28 +9,33 @@ import { DeviceDetectionService } from '../shared/services/device-detection.serv
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
+export class HomeComponent implements OnInit, OnDestroy  {
   allMedia: Media[] = [];
   recommended: Media[] = [];
   trending: Media[] = [];
-  mySwiper: Swiper;
   filteredArray: Media[] = [];
   searchTerm: string;
-  images: GalleryItem[];
   isMobile: boolean;
+  isTrendingLoading: boolean;
+  isContentLoading: boolean;
 
-  constructor(private mediaService: MediaService, private deviceDetectionService: DeviceDetectionService) {}
+  constructor(private mediaService: MediaService) {
+    this.isTrendingLoading = true;
+    this.isContentLoading = true;
+  }
   
   ngOnInit(): void {
-    this.deviceDetectionService.isMobile.subscribe((result) => {
-      this.isMobile = result;
-    });
-
     this.mediaService.fetchHomePageMedia(true).subscribe((media) => {
+      if(media.length > 0) {
+        this.isTrendingLoading = false;
+      }
       this.trending = media;
     });
 
     this.mediaService.fetchHomePageMedia(false).subscribe((media) => {
+      if(media.length > 0) {
+        this.isContentLoading = false;
+      }
       this.recommended = media;
     });
     
@@ -47,10 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
       this.searchResults();
     });
 
-  }
-  
-  ngAfterViewInit(): void {
-    // this.initSwiper();
+    this.getIsMobile();
   }
   
   searchResults() {
@@ -59,49 +57,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit  {
     });
   }
 
-  // private initSwiper(): void {
-  //   this.mySwiper = new Swiper('.swiper-container', {
-  //     breakpoints: {
-  //       320: {
-  //         slidesPerView: 1.5,
-  //         spaceBetween: 16
-  //       },
-  //       768: {
-  //         slidesPerView: 1.5,
-  //         // slidesPerGroup: 1,
-  //         spaceBetween: 40
-  //       },
-  //       1024: {
-  //         slidesPerView: 2.5,
-  //         // slidesPerView: 3.75,
-  //         spaceBetween: 40,
-  //       }
-  //     },
-  //     // cssMode: true
-  //     // slidesPerView: 'auto'
-  //     // scrollbar: {
-  //     //   el: '.swiper-scrollbar',
-  //     //   draggable: true,
-  //     //   dragSize: 'auto'
-  //     // },
-  //     // navigation: {
-  //     //   nextEl: '.swiper-button-next',
-  //     //   prevEl: '.swiper-button-prev'
-  //     // },
-  //     // pagination: {
-  //     //   el: '.swiper-pagination',
-  //     //   clickable: true
-  //     // }
-  //   });
-  // }
+  getIsMobile() {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   ngOnDestroy(): void {
     if(this.searchTerm) {
       this.mediaService.resetSearch();
     }
+  }
 
-    // if(this.mySwiper) {
-    //   this.mySwiper.destroy(true, true);
-    // }
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getIsMobile();
   }
 }

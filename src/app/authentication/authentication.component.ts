@@ -1,28 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NgForm, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
-// import { GithubAuthProvider } from 'firebase/auth';
-
-
 type AuthMode = 'Sign Up' | 'Login';
+type LoginMethod = 'GitHub' | 'email' | undefined;
 
 @Component({
   selector: 'app-authentication',
   templateUrl: './authentication.component.html',
   styleUrls: ['./authentication.component.scss']
 })
+
 export class AuthenticationComponent implements OnInit {
   authForm: FormGroup;
   authMethod: AuthMode = 'Login';
+  loginMethod: LoginMethod;
   authObservable: Observable<Record<string, any>>;
-  buttonText: string;
   errorMessage: string | null;
   isLoading: boolean;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.authForm = new FormGroup({
@@ -35,6 +34,8 @@ export class AuthenticationComponent implements OnInit {
   onSubmit() {
     this.errorMessage = null;
     this.isLoading = true;
+    this.loginMethod = 'email';
+    
     if(this.authForm.invalid) {
       return;
     }
@@ -56,15 +57,13 @@ export class AuthenticationComponent implements OnInit {
 
     this.authObservable.subscribe(
       {
-        // next: () => {
-
-        // },
         error: (err: string) => {
           this.isLoading = false;
           this.errorMessage = err;
         },
         complete: () => {
           this.isLoading = false;
+          this.loginMethod = undefined;
           this.router.navigate(['/home']);
         }
       }
@@ -73,17 +72,8 @@ export class AuthenticationComponent implements OnInit {
 
   gitHubLogin() {
     this.isLoading = true;
+    this.loginMethod = 'GitHub';
     this.authService.gitHubLogin()
-    // .then((userData) => {
-    //   if (userData) {
-    //     // Do something with the user data
-    //     // console.log('GitHub login successful:', userData);
-    //   }
-    // })
-    // .catch(error => {
-    //   // Handle errors appropriately
-    //   // console.error('Authentication error:', error);
-    // })
     .finally(() => {
       this.isLoading = false;
     });
@@ -94,5 +84,4 @@ export class AuthenticationComponent implements OnInit {
     this.authForm.reset();
     this.authMethod = this.authMethod === 'Sign Up' ? 'Login' : 'Sign Up';
   }
-
 }

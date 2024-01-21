@@ -1,14 +1,13 @@
-import { Injectable, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 
-import { tap, take, switchMap } from "rxjs/operators";
+import { take, switchMap } from "rxjs/operators";
 import { Observable, of } from "rxjs";
 
 @Injectable({'providedIn': "root"})
 
 export class AuthGuard{
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   canActivate(): Observable<boolean> {
     return this.authService.authState

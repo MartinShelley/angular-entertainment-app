@@ -3,8 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
-import { GalleryComponent } from '@daelmaak/ngx-gallery';
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +40,6 @@ register();
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    GalleryComponent,
     ReactiveFormsModule
   ],
   providers: [{

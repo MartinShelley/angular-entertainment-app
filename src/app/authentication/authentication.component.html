@@ -2,18 +2,20 @@
   <div class="auth-container-wrapper">
     <img src="assets/logo.svg" />
     <div class="form-wrapper">
-      <h1>{{ authMethod }}</h1>
-      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      <ng-container *ngIf="isLoading">
+        <app-loading-spinner [loginType]="loginMethod"></app-loading-spinner>
+      </ng-container>
       <form [formGroup]="authForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <h1>{{ authMethod }}</h1>
         <ng-container *ngIf="authMethod === 'Login'">
           <div class="input-group">
-            <input type="email" id="loginEmail" placeholder="Email address" formControlName="email" required />
+            <input [ngClass]="{'input-error': (authForm.controls['email'].dirty || authForm.controls['email'].touched) && !authForm.controls.email.value}" type="email" id="loginEmail" placeholder="Email address" formControlName="email" required />
             <span class="error-message"
               *ngIf="(authForm.controls['email']?.dirty || authForm.controls['email']?.touched) && !authForm.controls.email.value">Can't
               be empty</span>
           </div>
           <div class="input-group">
-            <input type="password" id="loginPassword" placeholder="Password" formControlName="password" required />
+            <input [ngClass]="{'input-error': (authForm.controls['password'].dirty || authForm.controls['password'].touched) && !authForm.controls.password.value}" type="password" id="loginPassword" placeholder="Password" formControlName="password" required />
             <span class="error-message"
               *ngIf="(authForm.controls['password']?.dirty || authForm.controls['password']?.touched) && !authForm.controls.password.value">Can't
               be empty</span>
@@ -28,19 +30,19 @@
         </ng-container>
         <ng-container *ngIf="authMethod === 'Sign Up'">
           <div class="input-group">
-            <input type="email" id="signupEmail" placeholder="Email address" formControlName="email" required />
+            <input [ngClass]="{'input-error': (authForm.controls['email'].dirty || authForm.controls['email'].touched) && !authForm.controls.email.value}" type="email" id="signupEmail" placeholder="Email address" formControlName="email" required />
             <span class="error-message"
               *ngIf="(authForm.controls['email']?.dirty || authForm.controls['email']?.touched) && !authForm.controls.email.value">Can't
               be empty</span>
           </div>
           <div class="input-group">
-            <input type="password" id="signupPassword" placeholder="Password" formControlName="password" required />
+            <input [ngClass]="{'input-error': (authForm.controls['password'].dirty || authForm.controls['password'].touched) && !authForm.controls.password.value}" type="password" id="signupPassword" placeholder="Password" formControlName="password" required />
             <span class="error-message"
               *ngIf="(authForm.controls['password']?.dirty || authForm.controls['password']?.touched) && !authForm.controls.password.value">Can't
               be empty</span>
           </div>
           <div class="input-group">
-            <input type="password" id="repeatPassword" placeholder="Repeat password" formControlName="repeatPassword"
+            <input [ngClass]="{'input-error': (authForm.controls['repeatPassword'].dirty || authForm.controls['repeatPassword'].touched) && !authForm.controls.repeatPassword.value}" type="password" id="repeatPassword" placeholder="Repeat password" formControlName="repeatPassword"
               required />
             <span class="error-message"
               *ngIf="(authForm.controls['repeatPassword']?.dirty || authForm.controls['repeatPassword']?.touched) && !authForm.controls.repeatPassword.value">Can't

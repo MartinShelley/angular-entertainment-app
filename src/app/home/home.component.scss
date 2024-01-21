@@ -14,7 +14,6 @@
   overflow-x: hidden;
 }
 
-
 .swiper-container > .swiper-scrollbar {
   background: #d6d6d6;
   border-radius: 2px;
@@ -23,9 +22,4 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.swiper-slide {
-  // max-width: 470px;
-  // width: 470px !important;
 }

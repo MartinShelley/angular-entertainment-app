@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Media } from '../media.model';
-import { MediaService } from '../media.service';
+import { Media } from '../shared/models/media.model';
+import { MediaService } from '../shared/services/media.service';
 
 @Component({
   selector: 'app-bookmarks',
@@ -15,11 +15,17 @@ export class BookmarksComponent implements OnInit, OnDestroy{
   filteredMovies: Media[] = [];
   filteredTVSeries: Media[] = [];
   searchTerm: string;
+  isContentLoading: boolean;
   
-  constructor(private mediaService: MediaService){}
+  constructor(private mediaService: MediaService){
+    this.isContentLoading = true;
+  }
 
   ngOnInit(): void {
     this.mediaService.fetchAllMedia().subscribe((media) => {
+      if(media.length > 0) {
+        this.isContentLoading = false;
+      }
       this.allMedia = media;
     });
   

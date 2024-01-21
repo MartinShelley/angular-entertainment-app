@@ -7,11 +7,12 @@ import { AuthGuard } from './authentication/auth.guard';
 import { MediaCategoryComponent } from './media-category/media-category.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'auth', component: AuthenticationComponent},
   {path: 'bookmarks', component: BookmarksComponent, canActivate: [AuthGuard]},
   {path: ':category', component: MediaCategoryComponent, canActivate: [AuthGuard]},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({
