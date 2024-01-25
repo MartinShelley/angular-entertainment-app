@@ -55,7 +55,6 @@ export class AuthenticationComponent implements OnInit {
     this.authObservable.subscribe(
       {
         error: (err: string) => {
-          console.log(err);
           this.isLoading = false;
           this.errorMessage = err;
         },

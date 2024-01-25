@@ -23,11 +23,9 @@ export class AuthService {
       catchError(error => throwError(() => {
         return this.handleErrors(error.code);
       })),
-      // tap(response => {
-      //   response.user.getIdToken().then((token) => {
-      //     this.setUser(response.user.uid, token);
-      //   })
-      // })
+      tap(response => {
+        this.router.navigate(['/home']);
+      })
     )
   }
 
@@ -37,35 +35,18 @@ export class AuthService {
       catchError(error => throwError(() => {
         return this.handleErrors(error.code);
       })),
-      // tap(response => {
-      //   response.user.getIdToken().then((token) => {
-      //     this.setUser(response.user.uid, token);
-      //   })
-      // })
+      tap(response => {
+        this.router.navigate(['/home']);
+      })
     )
   }
 
   async gitHubLogin() {
     try {
       await signInWithPopup(this.auth, this.gitHubProvider)
-      // .then((value) => {
-      //   value.user.getIdToken().then((token) => {
-      //     this.assignUser(value.user.uid, token);
-      //   })
-      //   this.router.navigate(['/home']);
-      // })
-      // .catch((error) =>{
-      //   console.error(error);
-      // })
-      // const result = await signInWithPopup(this.auth, this.gitHubProvider)
-      // if(result) {
-      //   console.log("result gitHubLogin: ", result);
-      //   const credential = GithubAuthProvider.credentialFromResult(result);
-      //   const userId = result.user.uid;
-      //   const token = credential!.accessToken;
-      //   console.log("token gitHub login: ", token);
-      //   this.setUser(userId, token!)
-      // }
+      .then(() => {
+        this.router.navigate(['/home']);
+      })
     }
     catch (error){
       console.error(error)
@@ -79,9 +60,12 @@ export class AuthService {
       userId: userId,
       token: token
     });
-    localStorage.setItem('returningUser', "true");
-    localStorage.setItem('uuid', userId);
-    localStorage.setItem('token', token);
+
+    if(!localStorage.getItem('returningUser')) {
+      localStorage.setItem('returningUser', "true");
+      localStorage.setItem('uuid', userId);
+      localStorage.setItem('token', token);
+    }
   }
 
   unassignUser() {
@@ -92,7 +76,6 @@ export class AuthService {
   }
 
   handleErrors(errorCode: string) {
-    console.log(errorCode);
     let errorMessage;
     switch(errorCode) {
       case "auth/email-already-in-use":
