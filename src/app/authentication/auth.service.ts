@@ -48,6 +48,15 @@ export class AuthService {
   async gitHubLogin() {
     try {
       await signInWithPopup(this.auth, this.gitHubProvider)
+      // .then((value) => {
+      //   value.user.getIdToken().then((token) => {
+      //     this.assignUser(value.user.uid, token);
+      //   })
+      //   this.router.navigate(['/home']);
+      // })
+      // .catch((error) =>{
+      //   console.error(error);
+      // })
       // const result = await signInWithPopup(this.auth, this.gitHubProvider)
       // if(result) {
       //   console.log("result gitHubLogin: ", result);
@@ -62,6 +71,24 @@ export class AuthService {
       console.error(error)
     }
     return null;
+  }
+
+  assignUser(userId: string, token: string) {
+    this.authState.next(true);
+    this.user.next({
+      userId: userId,
+      token: token
+    });
+    localStorage.setItem('returningUser', "true");
+    localStorage.setItem('uuid', userId);
+    localStorage.setItem('token', token);
+  }
+
+  unassignUser() {
+    this.user.next(null);
+    localStorage.removeItem('returningUser');
+    localStorage.removeItem('uuid');
+    localStorage.removeItem('token');
   }
 
   handleErrors(errorCode: string) {
@@ -87,22 +114,15 @@ export class AuthService {
       case 'auth/weak-password':
         errorMessage = 'Password is not strong enough, please use a stronger password.';
         break;
+      case 'auth/popup-blocked':
+        errorMessage = 'Popup is blocked. Please enable popups and refresh the page.';
+        break;
     }
     return errorMessage;
   }
 
-  // setUser(userId: string, token: string) {
-  //   localStorage.setItem('returningUser', "true");
-  //   // this.user.next({
-  //   //   'userId': userId,
-  //   //   'token': token
-  //   // })
-  //   console.log(this.user);
-  // }
-
   logout() {
     this.auth.signOut();
-    this.user.next(null);
-    localStorage.removeItem('returningUser');
+    this.unassignUser();
   }
 }
