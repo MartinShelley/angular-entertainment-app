@@ -15,7 +15,7 @@ export class MenuComponent {
   }
 
   getIsMobile() {
-    this.isMobile = window.innerWidth < 768;
+    this.isMobile = window.innerWidth < 1023;
   }
 
   toggleSignOutModal() {

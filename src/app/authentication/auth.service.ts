@@ -11,7 +11,7 @@ import { tap } from "rxjs/operators";
 export class AuthService {
   user = new BehaviorSubject<Record<string, string> | null>(null);
   auth = getAuth();
-  authState = new BehaviorSubject<boolean | null>(null);
+  authState = new BehaviorSubject<boolean>(false);
   gitHubProvider = new GithubAuthProvider();
   errorMessage = new BehaviorSubject<string | null>(null);
 
@@ -55,25 +55,41 @@ export class AuthService {
   }
 
   assignUser(userId: string, token: string) {
+    console.log("assigning user authService");
     this.authState.next(true);
     this.user.next({
       userId: userId,
       token: token
     });
 
-    if(!localStorage.getItem('returningUser')) {
-      localStorage.setItem('returningUser', "true");
-      localStorage.setItem('uuid', userId);
-      localStorage.setItem('token', token);
+    const tokenExpiration = new Date().getTime() + 3600 * 1000;
+    const userData = {
+      returningUser: "true",
+      uuid: userId,
+      token: token,
+      tokenExpiration: tokenExpiration
     }
+
+    localStorage.setItem('userData', JSON.stringify(userData));
   }
 
   unassignUser() {
+    this.authState.next(false);
     this.user.next(null);
-    localStorage.removeItem('returningUser');
-    localStorage.removeItem('uuid');
-    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
   }
+
+  // refreshUserToken(): Promise<string> {
+  //   console.log("refreshing user token from auth service");
+  //   const currentUser = this.auth.currentUser;
+  
+  //   if (currentUser) {
+  //     return currentUser.getIdToken(true);
+  //   } else {
+  //     // Handle the case when currentUser is null
+  //     return Promise.reject(new Error('Current user is null'));
+  //   }
+  // }
 
   handleErrors(errorCode: string) {
     let errorMessage;

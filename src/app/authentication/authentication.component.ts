@@ -21,7 +21,11 @@ export class AuthenticationComponent implements OnInit {
   errorMessage: string | null;
   isLoading: boolean;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    if(this.authService.authState) {
+      this.router.navigate(['/home']);
+    }
+  }
 
   ngOnInit(): void {
     this.authForm = new FormGroup({
