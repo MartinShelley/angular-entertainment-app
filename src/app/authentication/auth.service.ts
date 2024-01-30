@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { NumberValueAccessor } from "@angular/forms";
 import { Router } from "@angular/router";
 import { getAuth, GithubAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { BehaviorSubject, catchError, throwError, from } from "rxjs";
@@ -24,6 +25,7 @@ export class AuthService {
         return this.handleErrors(error.code);
       })),
       tap(response => {
+        console.log(response.user.refreshToken);
         this.router.navigate(['/home']);
       })
     )
@@ -54,7 +56,28 @@ export class AuthService {
     return null;
   }
 
-  assignUser(userId: string, token: string) {
+  // autoLogin() {
+  //   const userData = localStorage.getItem('userData');
+  //   if(!userData) {
+  //     console.log("no localstorage");
+  //     return;
+  //   }
+  //   const loadedUserData = JSON.parse(userData);
+  //   const expiresIn = loadedUserData.tokenExpiration - new Date().getTime();
+  //   if(expiresIn < 0) {
+  //     this.auth.currentUser!.getIdToken().then((token) => {
+  //       this.assignUser(this.auth.currentUser!.uid, token);
+  //       this.refreshTokenTimer(3600);
+  //     });
+  //   } 
+  //   else {
+  //     this.assignUser(loadedUserData.uuid, loadedUserData.token);
+  //     this.refreshTokenTimer(loadedUserData.expirationTimer);
+  //   }
+  //   // this.listenForStateChanges();
+  // }
+
+  assignUser(userId: string, token: string, timeToTokenExpiration: Date) {
     console.log("assigning user authService");
     this.authState.next(true);
     this.user.next({
@@ -62,7 +85,7 @@ export class AuthService {
       token: token
     });
 
-    const tokenExpiration = new Date().getTime() + 3600 * 1000;
+    const tokenExpiration = new Date().getTime() + 3600 * 1000; //time in one hour
     const userData = {
       returningUser: "true",
       uuid: userId,
@@ -78,18 +101,6 @@ export class AuthService {
     this.user.next(null);
     localStorage.removeItem('userData');
   }
-
-  // refreshUserToken(): Promise<string> {
-  //   console.log("refreshing user token from auth service");
-  //   const currentUser = this.auth.currentUser;
-  
-  //   if (currentUser) {
-  //     return currentUser.getIdToken(true);
-  //   } else {
-  //     // Handle the case when currentUser is null
-  //     return Promise.reject(new Error('Current user is null'));
-  //   }
-  // }
 
   handleErrors(errorCode: string) {
     let errorMessage;
@@ -119,6 +130,30 @@ export class AuthService {
     }
     return errorMessage;
   }
+
+  // refreshTokenTimer(expirationTimer: number) {
+  //   this.tokenExpirationTimer = setTimeout(() => {
+  //     this.auth.currentUser!.getIdToken().then((token) => {
+  //       this.assignUser(this.auth.currentUser!.uid, token);
+  //       this.refreshTokenTimer(3600); 
+  //     })
+  //   }, expirationTimer);
+  // }
+
+  // listenForStateChanges() {
+  //   this.auth.onAuthStateChanged(user => {
+  //     console.log("onAuthStageChanged!");
+  //     if(user) {
+  //       user.getIdToken().then((token) => {
+  //         this.assignUser(user.uid, token);
+  //       });
+  //     }
+  //     else {
+  //       this.unassignUser();
+  //       this.router.navigate(['/auth']);
+  //     }
+  //   })
+  // }
 
   logout() {
     this.auth.signOut();

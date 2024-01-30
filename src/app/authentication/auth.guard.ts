@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 
 import { take, switchMap, tap } from "rxjs/operators";
-import { Observable, of } from "rxjs";
+import { Observable, lastValueFrom, of } from "rxjs";
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 
 @Injectable({'providedIn': "root"})
@@ -16,6 +16,7 @@ export class AuthGuard {
       take(1),
       tap(user => {
         if(user) {
+          console.log("has user!");
           return true;
         }
         return this.router.navigate(['/auth']);
