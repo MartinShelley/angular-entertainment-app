@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from "rxjs/operators";
 
-import { Media } from "../models/media.model";
+import { catchError, map } from "rxjs/operators";
 import { BehaviorSubject, Observable } from "rxjs";
+
 import { AuthService } from "../../authentication/auth.service";
+import { Media } from "../models/media.model";
 import { User } from "src/app/authentication/user.model";
 
 @Injectable({providedIn: 'root'})
@@ -16,21 +17,25 @@ export class MediaService {
   bookmarksArray = new BehaviorSubject<Media[]>([]);
 
   constructor(private http: HttpClient, private authService: AuthService) {
-    this.authService.user.subscribe((user) => {
-      this.user = user;
-    });
-
-    this.fetchAllMedia().subscribe(data => this.mediaDataSubject.next(data));
-    this.fetchBookmarkedMedia().subscribe((data) =>{
-      if(data) {
-        this.bookmarksArray.next(data);
-      }
-      else {
-        this.bookmarksArray.next([]);
-      }
-    });
+    this.authService.auth.authStateReady().then(() => {
+      this.authService.user.subscribe((user) => {
+        this.user = user;
+      });
+      
+      this.fetchAllMedia().subscribe(data => this.mediaDataSubject.next(data));
+      
+    
+      this.fetchBookmarkedMedia().subscribe((data) =>{
+        if(data) {
+          this.bookmarksArray.next(data);
+        }
+        else {
+          this.bookmarksArray.next([]);
+        }
+      });
+    })
   }
-  
+
   fetchAllMedia() {
     return this.http.get<{ [key: number]: Media}>('https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/content.json')
     .pipe(map((responseData) => {

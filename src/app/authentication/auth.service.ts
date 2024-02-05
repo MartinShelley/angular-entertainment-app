@@ -11,6 +11,7 @@ import { User } from "./user.model";
 })
 
 export class AuthService {
+  fbAuthState = new BehaviorSubject<boolean>(false);
   user = new BehaviorSubject<User | null>(null);
   auth = getAuth();
   authState = new BehaviorSubject<boolean>(false);
@@ -27,8 +28,8 @@ export class AuthService {
         return this.handleErrors(error.code);
       })),
       tap(() => {
+        this.authState.next(true);
         this.getNewIdToken();
-        this.router.navigate(['/home']);
       })
     )
   }
@@ -40,8 +41,8 @@ export class AuthService {
         return this.handleErrors(error.code);
       })),
       tap(() => {
+        this.authState.next(true);
         this.getNewIdToken();
-        this.router.navigate(['/home']);
       })
     )
   }
@@ -49,29 +50,58 @@ export class AuthService {
   async gitHubLogin() {
     try {
       await signInWithPopup(this.auth, this.gitHubProvider);
-      this.getNewIdToken();
-      this.router.navigate(['/home']);
+      await this.getNewIdToken();
+      this.authState.next(true);
     }
     catch (error){
       console.error(error)
     }
   }
 
-  getNewIdToken() {
-    console.log("getNewIdToken");
-    const interval = setInterval(() => {
-      if(this.auth.currentUser) {
-        clearInterval(interval);
-        this.auth.currentUser!.getIdToken().then((token: string) => {
-          this.assignUser(this.auth.currentUser!.uid, token);
-          this.refreshTokenTimer(3600 * 1000);
-        });
+  async autoLogin() {
+    console.log("autoLogin");
+    const dataStoredAsString = localStorage.getItem('userData');
+    if(dataStoredAsString) {
+      console.log("we have items in local storage");
+      const userData = JSON.parse(dataStoredAsString);
+      const loadedUser = new User(userData.userId, userData._token, userData._tokenExpiration);
+      
+      if(loadedUser.token) {
+        console.log("token is still valid!!");
+        this.authState.next(true);
+        this.user.next(loadedUser);
+        this.refreshTokenTimer(loadedUser.tokenExpiration);
       }
-    }, 10);
+      else {
+        console.log("token is no longer valid");
+        this.getNewIdToken();
+      }
+    }
+    else {
+      return;
+    }
+  }
+
+  getNewIdToken() {
+    // return new Promise<void>((resolve) => {
+      console.log("getNewIdToken");
+      this.auth.authStateReady().then(() => {
+        if(this.auth.currentUser) {
+          console.log("found auth currentUser");
+          this.auth.currentUser.getIdToken().then((token: string) => {
+            console.log("fetched new Id");
+            this.assignUser(this.auth.currentUser!.uid, token);
+            this.refreshTokenTimer(3600 * 1000);
+            // resolve();
+          })
+        }
+      })
+    // })
   }
 
   assignUser(userId: string, token: string) {
-    this.authState.next(true);
+    console.log("assigning user");
+    // this.authState.next(true);
     const tokenExpiration = new Date().getTime() + 3600 * 1000; //time an hour from now in milliseconds
     const user = new User(userId, token, tokenExpiration);
     this.user.next(user);
@@ -79,12 +109,22 @@ export class AuthService {
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
+  // async isUserAuthenticated() {
+  //   return this.authState;
+  // }
+
   refreshTokenTimer(expirationTimer: number) {
-    console.log("refreshTokenTimer");
+    console.log("activating refreshTokenTimer");
     this.tokenExpirationTimer = setTimeout(() => {
       console.log("timeout");
+      clearTimeout(this.tokenExpirationTimer);
       this.getNewIdToken();
     }, expirationTimer);
+  }
+  
+  logout() {
+    this.auth.signOut();
+    this.unassignUser();
   }
 
   unassignUser() {
@@ -121,49 +161,4 @@ export class AuthService {
     }
     return this.errorMessage;
   }
-
-  async autoLogin() {
-    const dataStoredAsString = localStorage.getItem('userData');
-    if(dataStoredAsString) {
-      const userData = JSON.parse(dataStoredAsString);
-      const loadedUser = new User(userData.userId, userData._token, userData._tokenExpiration);
-      console.log(loadedUser);
-      
-      if(loadedUser.token) {
-        console.log("got token!!");
-        this.authState.next(true);
-        const user = new User(loadedUser.userId, loadedUser.token, loadedUser.tokenExpiration)
-        this.user.next(user);
-        this.refreshTokenTimer(loadedUser.tokenExpiration);
-      }
-
-      else {
-        this.getNewIdToken();
-      }
-    }
-    else {
-      return;
-    }
-  }
-
-  logout() {
-    this.auth.signOut();
-    this.unassignUser();
-  }
-
-  listenForStateChanges() {
-    this.auth.onAuthStateChanged(user => {
-      console.log("onAuthStageChanged!");
-      // if(user) {
-      //   user.getIdToken().then((token) => {
-      //     this.assignUser(user.uid, token);
-      //   });
-      // }
-      if(!user) {
-        this.unassignUser();
-        this.router.navigate(['/auth']);
-      }
-    })
-  }
-
 }

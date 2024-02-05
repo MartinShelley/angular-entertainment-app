@@ -77,6 +77,7 @@ export class AuthenticationComponent implements OnInit {
     this.authService.gitHubLogin()
     .finally(() => {
       this.isLoading = false;
+      this.router.navigate(['/home']);
     });
   }
 
