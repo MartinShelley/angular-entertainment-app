@@ -14,8 +14,8 @@ export class AuthInterceptorService implements HttpInterceptor{
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.authService.user.pipe(
       take(1),
-      exhaustMap( user => {
-        if (!user) {
+      exhaustMap(user => {
+        if (!user || user.token === null) {
           return next.handle(req);
         }
 
@@ -27,17 +27,6 @@ export class AuthInterceptorService implements HttpInterceptor{
         
       })
     )
-    // return from(this.getCurrentIdToken()).pipe(
-    //   mergeMap(token => {
-    //     console.log(token);
-    //     req = req.clone({
-    //       setHeaders: {
-    //         Authorization: `Bearer ${token}`
-    //       }
-    //     });
-    //     return next.handle(req);
-    //   })
-    // )
   }
 
 

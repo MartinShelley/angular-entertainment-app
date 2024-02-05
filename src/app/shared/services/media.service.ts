@@ -5,11 +5,12 @@ import { catchError, map } from "rxjs/operators";
 import { Media } from "../models/media.model";
 import { BehaviorSubject, Observable } from "rxjs";
 import { AuthService } from "../../authentication/auth.service";
+import { User } from "src/app/authentication/user.model";
 
 @Injectable({providedIn: 'root'})
 
 export class MediaService {
-  user: Record<string, string> | null;
+  user: User | null;
   mediaDataSubject = new BehaviorSubject<Media[]>([]);
   searchValueSubject = new BehaviorSubject<string>('');
   bookmarksArray = new BehaviorSubject<Media[]>([]);

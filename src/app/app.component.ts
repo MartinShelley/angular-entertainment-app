@@ -18,27 +18,27 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
+    // private router: Router,
   ) {}
 
-  async ngOnInit(): Promise<any> {
-    await this.waitForToken();
-    this.listenForStateChanges();
-    this.auth.onIdTokenChanged((response) => {
-      console.log("onIDTokenChanged: ", response);
+  async ngOnInit(): Promise<void> {
+    await this.authService.autoLogin();
+    // await this.waitForToken();
+    this.authService.listenForStateChanges();
+    this.auth.onIdTokenChanged((token) => {
+      console.log("onIdTokenChanged!!");
+      console.log("token from IdTokenChanged: ", token);
     })
   }
 
 
   /*
   Notes to check
-  - Have another reread of the stackover page I saved. Could I get user token from the inteceptor before every request???
-  - If I have onIdTokenChanged listening, what happens after I login and an hour has passed?
-    - Will it trigger then can I then call getIdToken to get a new one?
+  Now the issue is when a user signs in, then comes back to the site an hour later. Currently with the app the way it is, the auth guard fires too quickly before we've found the user/get new id so stuck on auth page
+    - Can we delay the guard until we understand if user is signed in???
+    - Or check for local storage, if user & expired, get new token then pass something to guard?
 
-  - If the above doesn't work as intended, explore using a timer then at the end of the timer, call getIdToken to get a new one
 
-  - If all that doesn't work, then do auto logout.
 
   UPDATE!!!!!
   The timeout listener was not working as it was too long!!!!
@@ -51,67 +51,23 @@ export class AppComponent implements OnInit {
 
   */
 
-  async waitForToken() {
-    return new Promise<void>((resolve, reject) => {
-      const storedDataAsString = localStorage.getItem('userData');
-      if (storedDataAsString !== null) {
-        console.log("I have data in local storage");
-        const userData = JSON.parse(storedDataAsString);
-        const hasSavedTokenExpired = new Date().getTime() > new Date(userData.tokenExpiration).getTime();
-        if(hasSavedTokenExpired) {
-          console.log("token has expried!!");
-          const interval = setInterval(() => {
-            console.log("inside interval");
-            if(this.auth.currentUser) {
-              console.log("found current user");
-              clearInterval(interval);
-              this.auth.currentUser.getIdToken().then((token) => {
-                console.log("got new ID token");
-                this.authService.assignUser(this.auth.currentUser!.uid, token, new Date(new Date().getTime() + 3600 * 1000));
-                this.refreshTokenTimer(3600 * 1000);
-                resolve();
-              }).catch(reject);
-            }
-          }, 10);
-        }
-        else {
-          console.log("token has NOT expired yet");
-          this.authService.assignUser(userData.uuid, userData.token, userData.tokenExpiration);
-          console.log("this is token expiration: ", userData.tokenExpiration)
-          this.refreshTokenTimer(new Date(userData.tokenExpiration).getTime() - new Date().getTime());
-          console.log(`we have ${new Date(new Date(userData.tokenExpiration).getTime() - new Date().getTime()).getMinutes()} minutes left for the token expiration`)
-          resolve();
-        }
-      }
-      else {
-        resolve();
-      }
-    })
-  }
-  
-  listenForStateChanges() {
-    this.auth.onAuthStateChanged(user => {
-      console.log("onAuthStageChanged!");
-      if(user) {
-        user.getIdToken().then((token) => {
-          this.authService.assignUser(user.uid, token, new Date(new Date().getTime() + 3600 * 1000));
-        });
-      }
-      else {
-        this.authService.unassignUser();
-        this.router.navigate(['/auth']);
-      }
-    })
-  }
-
-  refreshTokenTimer(expirationTimer: number) {
-    this.tokenExpirationTimer = setTimeout(() => {
-      console.log("timout!!!!");
-      this.auth.currentUser!.getIdToken().then((token) => {
-        console.log("getting new ID Token!!");
-        this.authService.assignUser(this.auth.currentUser!.uid, token, new Date(new Date().getTime() + 3600 * 1000));
-        this.refreshTokenTimer(3600 * 1000); 
-      })
-    }, expirationTimer);
-  }
+  // async waitForToken() {
+  //   // return new Promise<void>((resolve, reject) => {
+  //   const storedDataAsString = localStorage.getItem('userData');
+  //   if(storedDataAsString !== null) {
+  //     const userData = JSON.parse(storedDataAsString);
+  //     this.authService.authState.next(true);
+  //     // const hasSavedTokenExpired = new Date().getTime() > new Date(userData.tokenExpiration).getTime();
+  //     // if(hasSavedTokenExpired) {
+  //     const interval = setInterval(() => {
+  //       if(this.authService.auth.currentUser) {
+  //         clearInterval(interval);
+  //         this.authService.getNewIdToken();
+  //       }
+  //     })
+  //   }
+  //   else {
+  //     this.authService.authState.next(false);
+  //   }
+  // }
 }
