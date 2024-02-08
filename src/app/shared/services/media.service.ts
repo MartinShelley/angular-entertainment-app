@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 
 import { catchError, map } from "rxjs/operators";
@@ -11,7 +11,7 @@ import { User } from "src/app/authentication/user.model";
 @Injectable({providedIn: 'root'})
 
 export class MediaService {
-  user: User | null;
+  user: User;
   mediaDataSubject = new BehaviorSubject<Media[]>([]);
   searchValueSubject = new BehaviorSubject<string>('');
   bookmarksArray = new BehaviorSubject<Media[]>([]);
@@ -20,20 +20,25 @@ export class MediaService {
     this.authService.auth.authStateReady().then(() => {
       this.authService.user.subscribe((user) => {
         this.user = user;
+        this.resetMediaService(); //added this function in case users sign in via multiple logins
       });
-      
+    });
+  }
+
+  resetMediaService() {
+    if (this.user) {
       this.fetchAllMedia().subscribe(data => this.mediaDataSubject.next(data));
-      
-    
-      this.fetchBookmarkedMedia().subscribe((data) =>{
+      this.fetchBookmarkedMedia().subscribe((data) => {
         if(data) {
           this.bookmarksArray.next(data);
-        }
-        else {
+        } else {
           this.bookmarksArray.next([]);
         }
       });
-    })
+    } else {
+      this.mediaDataSubject.next([]);
+      this.bookmarksArray.next([]);
+    }
   }
 
   fetchAllMedia() {
@@ -66,12 +71,11 @@ export class MediaService {
   }
 
   fetchBookmarkedMedia() {
-    const userId = this.user!.userId;
-    return this.http.get<Media[]>(`https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/bookmarks/${userId}.json`)
+    return this.http.get<Media[]>(`https://angular-entertainment-app-default-rtdb.europe-west1.firebasedatabase.app/bookmarks/${this.user.userId}.json`)
     .pipe(
       map((response) => {
         if(!response) {
-          return;
+          return false;
         }
         return Object.values(response);
       })

@@ -11,8 +11,7 @@ import { User } from "./user.model";
 })
 
 export class AuthService {
-  fbAuthState = new BehaviorSubject<boolean>(false);
-  user = new BehaviorSubject<User | null>(null);
+  user = new BehaviorSubject<User>(null);
   auth = getAuth();
   authState = new BehaviorSubject<boolean>(false);
   gitHubProvider = new GithubAuthProvider();
@@ -59,22 +58,18 @@ export class AuthService {
   }
 
   async autoLogin() {
-    console.log("autoLogin");
     const dataStoredAsString = localStorage.getItem('userData');
     if(dataStoredAsString) {
-      console.log("we have items in local storage");
       const userData = JSON.parse(dataStoredAsString);
-      const loadedUser = new User(userData.userId, userData._token, userData._tokenExpiration);
+      const loadedUser = new User(userData.userId, userData._token, userData._tokenExpirationDate);
       
       if(loadedUser.token) {
-        console.log("token is still valid!!");
         this.authState.next(true);
         this.user.next(loadedUser);
-        this.refreshTokenTimer(loadedUser.tokenExpiration);
+        this.refreshTokenTimer(new Date(loadedUser.tokenExpiration).getTime() - new Date().getTime());
       }
       else {
-        console.log("token is no longer valid");
-        this.getNewIdToken();
+        this.logout();
       }
     }
     else {
@@ -82,41 +77,29 @@ export class AuthService {
     }
   }
 
-  getNewIdToken() {
-    // return new Promise<void>((resolve) => {
-      console.log("getNewIdToken");
+  async getNewIdToken() {
+    return new Promise<void>((resolve) => {
       this.auth.authStateReady().then(() => {
         if(this.auth.currentUser) {
-          console.log("found auth currentUser");
           this.auth.currentUser.getIdToken().then((token: string) => {
-            console.log("fetched new Id");
             this.assignUser(this.auth.currentUser!.uid, token);
             this.refreshTokenTimer(3600 * 1000);
-            // resolve();
-          })
+            resolve();
+          });
         }
-      })
-    // })
+      });
+    });
   }
 
   assignUser(userId: string, token: string) {
-    console.log("assigning user");
-    // this.authState.next(true);
-    const tokenExpiration = new Date().getTime() + 3600 * 1000; //time an hour from now in milliseconds
-    const user = new User(userId, token, tokenExpiration);
+    const tokenExpirationDate = new Date().getTime() + 3600 * 1000; //time an hour from now in milliseconds
+    const user = new User(userId, token, tokenExpirationDate);
     this.user.next(user);
-
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
-  // async isUserAuthenticated() {
-  //   return this.authState;
-  // }
-
   refreshTokenTimer(expirationTimer: number) {
-    console.log("activating refreshTokenTimer");
     this.tokenExpirationTimer = setTimeout(() => {
-      console.log("timeout");
       clearTimeout(this.tokenExpirationTimer);
       this.getNewIdToken();
     }, expirationTimer);

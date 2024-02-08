@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { AuthService } from "./auth.service";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 
 import { take } from "rxjs/operators";
 import { lastValueFrom } from "rxjs";
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
+
+import { AuthService } from "./auth.service";
 
 @Injectable({'providedIn': "root"})
 
@@ -13,7 +14,6 @@ export class AuthGuard {
   async canActivate(route: ActivatedRouteSnapshot, router: RouterStateSnapshot): Promise<boolean> {
     
     const isUserLoggedIn = await lastValueFrom(this.authService.authState.pipe(take(1)));
-    console.log("authGuard: ", isUserLoggedIn);
 
     if(isUserLoggedIn) {
       return true;

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
-import { Observable, from } from "rxjs";
-import { take, exhaustMap, mergeMap } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { take, exhaustMap } from "rxjs/operators";
 import { getAuth } from "firebase/auth";
 
 @Injectable()
@@ -28,20 +28,4 @@ export class AuthInterceptorService implements HttpInterceptor{
       })
     )
   }
-
-
-  // getCurrentIdToken() {
-  //   return new Promise((resolve, reject) => {
-  //     const unsubscribe = this.auth.onIdTokenChanged(user => {
-  //       unsubscribe();
-  //       if (user) {
-  //         user.getIdToken().then(token => {
-  //           resolve(token);
-  //         });
-  //       } else {
-  //         reject(null);
-  //       }
-  //     }, reject);
-  //   });
-  // }
 }
